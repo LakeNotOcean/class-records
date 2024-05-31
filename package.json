@@ -1,0 +1,29 @@
+{
+	"name": "class-records-root",
+	"scripts": {
+		"typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d ./common/dbContext/database-config.ts",
+		"migration:generate-dev": "cross-env NODE_ENV=dev npm run typeorm:cli migration:generate -p common/dbContext/migrations/migration",
+		"migration:run-dev": "cross-env NODE_ENV=dev npm run typeorm:cli migration:run"
+	},
+	"version": "0.0.1",
+	"description": "Project root, used to migrate the database and storage general logic.",
+	"keywords": [
+		"typeorm",
+		"migration"
+	],
+	"author": "Nevsky Vladislav",
+	"license": "MIT",
+	"dependencies": {
+		"@nestjs/common": "^10.3.8",
+		"@nestjs/config": "^3.2.2",
+		"@nestjs/typeorm": "^10.0.2",
+		"cross-env": "^7.0.3",
+		"dotenv": "^16.4.5",
+		"tsconfig-paths": "^4.2.0",
+		"typeorm": "^0.3.20"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^7.11.0",
+		"eslint": "^8.56.0"
+	}
+}
