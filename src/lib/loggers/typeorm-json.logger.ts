@@ -1,5 +1,5 @@
-import { EnvEnum } from 'lib/enums/env.enum';
 import { QueryRunner, Logger as TypeOrmLogger } from 'typeorm';
+import { EnvEnum } from '../enums/env.enum';
 import { SqlQueryLogger } from './sql-query-json.logger';
 
 type logDataFormatFuncType = (query: string) => object;

@@ -7,7 +7,7 @@ import {
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 import { LessonsEntity } from './Lessons.entity';
-import { Students } from './Students.entity';
+import { StudentsEntity } from './Students.entity';
 
 @Index('id_student_id_lesson_pkey', ['idLesson', 'idStudent'], { unique: true })
 @Entity('lesson_students', { schema: 'class' })
@@ -27,9 +27,9 @@ export class LessonStudentsEntity {
 	@JoinColumn([{ name: 'id_lesson', referencedColumnName: 'id' }])
 	idLesson2: LessonsEntity;
 
-	@ManyToOne(() => Students, (students) => students.lessonStudents, {
+	@ManyToOne(() => StudentsEntity, (students) => students.lessonStudents, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn([{ name: 'id_student', referencedColumnName: 'id' }])
-	idStudent2: Students;
+	idStudent2: StudentsEntity;
 }

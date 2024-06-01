@@ -3,12 +3,14 @@ import {
 	TypeOrmModuleAsyncOptions,
 	TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
-import { generalConfig } from 'common/configs/config';
-import { TypeOrmJsonLogger } from 'lib/loggers/typeorm-json.logger';
 import { join } from 'path';
+import { TypeOrmJsonLogger } from 'src/lib/loggers/typeorm-json.logger';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { generalConfig } from '../configs/config';
 
-function getDatabaseConfig(configService?: ConfigService): DataSourceOptions {
+export function getDatabaseConfig(
+	configService?: ConfigService,
+): DataSourceOptions {
 	configService ??= new ConfigService(generalConfig());
 
 	return {
