@@ -1,4 +1,4 @@
-import { ResultEnum, toInteger } from '@common';
+import { ResultEnum, toDate } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
@@ -9,27 +9,27 @@ import {
 	ValidationError,
 } from 'class-validator';
 import { ValidationException } from 'libs/common/src/exceptions';
-import { getIntRangeValueDescription } from '../api-descriptions/int-range-value.description';
-import { getRangeFromString } from '../dto/range.dto';
-import { intValueDecOptions } from './int-value.decorator';
+import { getDateRangeValueDescription } from '../api-descriptions/date-range-value.description';
+import { DATE_REGEX } from '../constants/regex';
+import { getArrayFromString } from '../utils/get-array-from-string';
+import { dateValueDecOptions } from './date-value.decorator';
 
-export function intOrRangeValueDec(opt: intValueDecOptions) {
-	const rangeDescr = getIntRangeValueDescription();
+export function dateOrRangeValueDec(opt: dateValueDecOptions) {
+	const rangeDescr = getDateRangeValueDescription();
 	return applyDecorators(
 		ApiProperty({
 			type: Object,
 			oneOf: [
 				{ ...rangeDescr },
 				{
-					type: 'integer',
-					example: 3,
+					type: 'date',
+					example: '2021-02-22',
 				},
 			],
 			required: opt.isRequired,
 		}),
 		opt.isRequired ? IsNotEmpty() : IsOptional(),
 		ValidateIf((_obj, value) => value != null && value != undefined),
-
 		Transform(({ value }) => {
 			if (typeof value !== 'string') {
 				const error = new ValidationError();
@@ -37,19 +37,21 @@ export function intOrRangeValueDec(opt: intValueDecOptions) {
 				error.value = 'test';
 				throw new ValidationException([error]);
 			}
-
-			const parseIntegerRes = toInteger(value, 0);
-			if (parseIntegerRes.result == ResultEnum.Success) {
-				return parseIntegerRes.resultData;
+			const parseSingleDateResult = toDate(value);
+			if (parseSingleDateResult.result != ResultEnum.Error) {
+				return parseSingleDateResult.errorMessage;
 			}
-
-			const rangeFromString = getRangeFromString(value);
-			if (rangeFromString.result == ResultEnum.Success) {
-				return rangeFromString.resultData;
+			const parseResult = getArrayFromString(value, 2, DATE_REGEX, toDate);
+			if (
+				parseResult.result == ResultEnum.Success &&
+				parseResult.resultData.length == 2
+			) {
+				return parseResult.resultData;
 			}
 
 			const error = new ValidationError();
 			error.property = value;
+			error.value = 'test_value';
 			throw new ValidationException([error]);
 		}),
 	);

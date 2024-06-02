@@ -14,7 +14,7 @@ import {
 	ExceptionsModuleAsyncOptions,
 	ExceptionsModuleOptions,
 } from './exception-options.type';
-import { ExceptionTypeEnum } from './exception.num';
+import { ExceptionTypeEnum } from './exception.enum';
 import { Exception } from './exceptions';
 
 export interface IExceptionsFormatter {

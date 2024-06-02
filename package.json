@@ -30,6 +30,7 @@
 		"cross-env": "^7.0.3",
 		"dotenv": "^16.4.5",
 		"nest-commander": "^3.13.0",
+		"nestjs-pino": "^4.1.0",
 		"pg": "^8.11.5",
 		"ts-node": "^10.9.2",
 		"tsconfig-paths": "^4.2.0",

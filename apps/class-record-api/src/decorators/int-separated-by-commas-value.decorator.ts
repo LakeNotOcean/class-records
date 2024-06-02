@@ -9,27 +9,20 @@ import {
 	ValidationError,
 } from 'class-validator';
 import { ValidationException } from 'libs/common/src/exceptions';
-import { getIntRangeValueDescription } from '../api-descriptions/int-range-value.description';
-import { getRangeFromString } from '../dto/range.dto';
+import { getIntSeparatedByCommasDescription } from '../api-descriptions/int-seperated-by-commas.description';
+import { INT_REGEX } from '../constants/regex';
+import { getArrayFromString } from '../utils/get-array-from-string';
 import { intValueDecOptions } from './int-value.decorator';
 
-export function intOrRangeValueDec(opt: intValueDecOptions) {
-	const rangeDescr = getIntRangeValueDescription();
+export function intSeparatedByCommasValueDec(opt: intValueDecOptions) {
+	const apiDescr = getIntSeparatedByCommasDescription();
 	return applyDecorators(
 		ApiProperty({
-			type: Object,
-			oneOf: [
-				{ ...rangeDescr },
-				{
-					type: 'integer',
-					example: 3,
-				},
-			],
+			...apiDescr,
 			required: opt.isRequired,
 		}),
 		opt.isRequired ? IsNotEmpty() : IsOptional(),
 		ValidateIf((_obj, value) => value != null && value != undefined),
-
 		Transform(({ value }) => {
 			if (typeof value !== 'string') {
 				const error = new ValidationError();
@@ -37,15 +30,9 @@ export function intOrRangeValueDec(opt: intValueDecOptions) {
 				error.value = 'test';
 				throw new ValidationException([error]);
 			}
-
-			const parseIntegerRes = toInteger(value, 0);
-			if (parseIntegerRes.result == ResultEnum.Success) {
-				return parseIntegerRes.resultData;
-			}
-
-			const rangeFromString = getRangeFromString(value);
-			if (rangeFromString.result == ResultEnum.Success) {
-				return rangeFromString.resultData;
+			const parseResult = getArrayFromString(value, 20, INT_REGEX, toInteger);
+			if (parseResult.result == ResultEnum.Success) {
+				return parseResult.resultData;
 			}
 
 			const error = new ValidationError();

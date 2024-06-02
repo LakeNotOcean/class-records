@@ -3,27 +3,33 @@ import {
 	createSuccessResult,
 	Result,
 	ResultEnum,
-	toInteger,
+	toDate,
 } from '@common';
-import { INT_REGEX } from '../constants/regex';
-import { intValueDec } from '../decorators/int-value.decorator';
+import { DATE_REGEX } from '../constants/regex';
+import { dateValueDecorator } from '../decorators/date-value.decorator';
 import { getArrayFromString } from '../utils/get-array-from-string';
 
-export class RangeDto {
-	@intValueDec({ isRequired: true })
-	start: number;
-	@intValueDec({ isRequired: true })
-	end: number;
-	constructor(args: Required<RangeDto>) {
+export class DateRangeDto {
+	@dateValueDecorator({ isRequired: true })
+	start: Date;
+	@dateValueDecorator({ isRequired: true })
+	end: Date;
+	constructor(args: Required<DateRangeDto>) {
 		Object.assign(this, args);
 	}
 }
 
-export function getRangeFromString(rangeString: string): Result<RangeDto> {
-	const numberArr = getArrayFromString(rangeString, 2, INT_REGEX, toInteger);
+export function getRangeFromString(rangeString: string): Result<DateRangeDto> {
+	const numberArr = getArrayFromString<Date>(
+		rangeString,
+		2,
+		DATE_REGEX,
+		toDate,
+	);
 	if (numberArr.result == ResultEnum.Error) {
 		return createErrorResult(numberArr.errorMessage);
 	}
+
 	const resultData = numberArr.resultData;
 	if (resultData.length != 2) {
 		return createErrorResult('there are not two numbers in the string');
@@ -34,7 +40,7 @@ export function getRangeFromString(rangeString: string): Result<RangeDto> {
 		);
 	}
 	return createSuccessResult(
-		new RangeDto({
+		new DateRangeDto({
 			start: resultData[0],
 			end: resultData[1],
 		}),

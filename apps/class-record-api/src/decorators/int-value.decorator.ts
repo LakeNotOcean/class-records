@@ -1,3 +1,4 @@
+import { ResultEnum, toInteger } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
@@ -10,18 +11,20 @@ import {
 	ValidateIf,
 } from 'class-validator';
 
-export type intValueDecoratorOptions = {
+export type intValueDecOptions = {
 	isRequired: boolean;
 	minValue?: number;
 	maxValue?: number;
 };
 
-export function IntValueDecorator(opt: intValueDecoratorOptions) {
+export function intValueDec(opt: intValueDecOptions) {
 	const decorators = [
 		ApiProperty({ required: opt.isRequired, type: 'integer' }),
 		opt.isRequired ? IsNotEmpty() : IsOptional(),
 		ValidateIf((_obj, value) => value != null && value != undefined),
-		Transform(({ value }) => (value ? parseInt(value) : value)),
+		Transform(({ value }) =>
+			toInteger(value).result == ResultEnum.Error ? value : parseInt(value),
+		),
 	];
 	if (opt.isRequired) {
 		decorators.push(IsInt());
