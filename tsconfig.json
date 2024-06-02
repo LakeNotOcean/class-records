@@ -19,10 +19,8 @@
 		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": false,
 		"noFallthroughCasesInSwitch": false,
-		"composite": true,
 		"paths": {
-			"@lib": ["./src/lib"],
-			"@common": ["./src/common"]
+			"@common": ["./libs/common/src"]
 		}
 	}
 }

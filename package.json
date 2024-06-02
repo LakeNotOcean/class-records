@@ -1,9 +1,14 @@
 {
-	"name": "class-records-root",
+	"name": "class-records",
 	"scripts": {
-		"typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d ./common/dbContext/database-config.ts",
-		"migration:generate-dev": "cross-env NODE_ENV=dev npm run typeorm:cli migration:generate -p common/dbContext/migrations/migration",
-		"migration:run-dev": "cross-env NODE_ENV=dev npm run typeorm:cli migration:run"
+		"MIGRATION SCRIPTS": "",
+		"typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d ./libs/common/src/dbContext/database-config.ts",
+		"migration:generate-dev": "cross-env NODE_ENV=dev npm run typeorm:cli migration:generate -p libs/common/src/dbContext/migrations/migration",
+		"migration:run-dev": "cross-env NODE_ENV=dev npm run typeorm:cli migration:run",
+		"GENERATION SCRIPTS": "",
+		"data-generator:build": "nest build data-generator",
+		"data-generator": "cross-env NODE_ENV=dev node dist/apps/data-generator/main.js",
+		"data-generator:debug": "cross-env NODE_ENV=dev nest start data-generator  --debug --watch -- -t teachers -q 10000"
 	},
 	"version": "0.0.1",
 	"description": "Project root, used to migrate the database and storage general logic.",
@@ -14,16 +19,20 @@
 	"author": "Nevsky Vladislav",
 	"license": "MIT",
 	"dependencies": {
+		"@faker-js/faker": "^8.4.1",
 		"@nestjs/common": "^10.3.8",
 		"@nestjs/config": "^3.2.2",
 		"@nestjs/typeorm": "^10.0.2",
 		"cross-env": "^7.0.3",
 		"dotenv": "^16.4.5",
+		"nest-commander": "^3.13.0",
+		"pg": "^8.11.5",
 		"tsconfig-paths": "^4.2.0",
 		"typeorm": "^0.3.20"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^7.11.0",
-		"eslint": "^8.56.0"
+		"eslint": "^8.56.0",
+		"ts-loader": "^9.5.1"
 	}
 }
