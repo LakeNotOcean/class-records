@@ -1,8 +1,8 @@
 import { generalConfig } from '@common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DataClearingRunner } from './runner/data-clearing-runner';
-import { DataGeneratorRunner } from './runner/data-generator-runner';
+import { DataClearingCommand } from './runner/data-cleansing-command';
+import { DataGeneratorCommand } from './runner/data-generator-command';
 
 @Module({
 	imports: [
@@ -13,6 +13,6 @@ import { DataGeneratorRunner } from './runner/data-generator-runner';
 			load: [generalConfig],
 		}),
 	],
-	providers: [DataGeneratorRunner, DataClearingRunner],
+	providers: [DataGeneratorCommand, DataClearingCommand],
 })
 export class AppModule {}

@@ -8,10 +8,19 @@ if (!env) {
 
 const CONFIG_FILENAME = `${env}.env`;
 
-const path = join(__dirname, '..', '..', '..', 'env', CONFIG_FILENAME);
 export const generalConfig = () => {
+	const path = join(__dirname, '..', '..', '..', 'env', CONFIG_FILENAME);
 	const result = config({
 		path: path,
+	});
+	result.parsed['env'] = env;
+	return result;
+};
+
+export const getConfigFromPath = (pathToConfigDir: string) => {
+	const configPath = join(pathToConfigDir, CONFIG_FILENAME);
+	const result = config({
+		path: configPath,
 	});
 	result.parsed['env'] = env;
 	return result;

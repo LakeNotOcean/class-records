@@ -1,7 +1,7 @@
-import { Logger } from '@nestjs/common';
+import { ConsoleLogger } from '@nestjs/common';
 import { LogMessageEnum } from './enums/logger-message.enum';
 
-export class JsonLogger extends Logger {
+export class JsonLogger extends ConsoleLogger {
 	private _loggerMessageType = LogMessageEnum.customMessage;
 	constructor(context: string) {
 		super(context);
@@ -18,7 +18,7 @@ export class JsonLogger extends Logger {
 		}
 		super.log({
 			type: loggerMessageType ? loggerMessageType : this._loggerMessageType,
-			logData: logData,
+			logData,
 		});
 	}
 	warn(logData: string | object, loggerMessageType?: LogMessageEnum) {
@@ -27,7 +27,7 @@ export class JsonLogger extends Logger {
 		}
 		super.warn({
 			type: loggerMessageType ? loggerMessageType : this._loggerMessageType,
-			logData: logData,
+			logData,
 		});
 	}
 	error(logData: string | object, loggerMessageType?: LogMessageEnum) {
@@ -36,7 +36,11 @@ export class JsonLogger extends Logger {
 		}
 		super.error({
 			type: loggerMessageType ? loggerMessageType : this._loggerMessageType,
-			logData: logData,
+			logData: {
+				message: logData['message'],
+				stack: logData['stack'],
+				...logData,
+			},
 		});
 	}
 }

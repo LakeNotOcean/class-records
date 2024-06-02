@@ -4,15 +4,19 @@ import {
 	TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
 import { join } from 'path';
-import { DataSource, DataSourceOptions } from 'typeorm';
-import { generalConfig } from '../configs/config';
+import { DataSourceOptions } from 'typeorm';
 import { TypeOrmJsonLogger } from '../loggers';
+import {
+	LessonsEntity,
+	LessonStudentsEntity,
+	StudentsEntity,
+	TeachersEntity,
+} from './entities';
 
 export function getDatabaseConfig(
-	configService?: ConfigService,
+	configService: ConfigService,
 ): DataSourceOptions {
-	configService ??= new ConfigService(generalConfig());
-
+	const isLogging = configService.getOrThrow('postgresIsLogging') === 'true';
 	return {
 		type: 'postgres',
 		host: configService.getOrThrow<string>('postgresHost'),
@@ -22,16 +26,21 @@ export function getDatabaseConfig(
 		database: configService.getOrThrow<string>('postgresDatabase'),
 		schema: configService.getOrThrow<string>('postgresSchema'),
 		synchronize: false,
-		logging: Boolean(configService.getOrThrow<boolean>('postgresIsLogging')),
+		logging: isLogging ? isLogging : ['error'],
 		// system pool
 		extra: {
 			max: Number(configService.getOrThrow<number>('postgresClientPool')),
 			idleTimeoutMillis: 30000,
 		},
-		logger: new TypeOrmJsonLogger(),
+		logger: isLogging ? new TypeOrmJsonLogger() : 'simple-console',
 		maxQueryExecutionTime: 1000,
 		migrations: [join(__dirname, 'migrations', '*{.js,.ts}')],
-		entities: [join(__dirname, 'entities', '*{.js,.ts}')],
+		entities: [
+			LessonsEntity,
+			LessonStudentsEntity,
+			StudentsEntity,
+			TeachersEntity,
+		],
 	};
 }
 
@@ -42,5 +51,3 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
 		return getDatabaseConfig(configService);
 	},
 };
-
-export default new DataSource(getDatabaseConfig());

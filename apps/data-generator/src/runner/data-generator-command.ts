@@ -18,9 +18,9 @@ import { dbInitialization } from './utils/db-initialization';
 	description: 'generating fake data for a given table of a certain quantity',
 	options: { isDefault: true },
 })
-export class DataGeneratorRunner extends CommandRunner {
+export class DataGeneratorCommand extends CommandRunner {
 	private readonly dataSource: DataSource;
-	private readonly logger = new JsonLogger(DataGeneratorRunner.name);
+	private readonly logger = new JsonLogger(DataGeneratorCommand.name);
 
 	constructor(configService: ConfigService) {
 		super();
@@ -32,7 +32,7 @@ export class DataGeneratorRunner extends CommandRunner {
 		options: { table: TableEnum; quantity: number },
 	): Promise<void> {
 		const queryRunner = await dbInitialization(this.dataSource, this.logger);
-
+		this.logger.log('start of generation...');
 		try {
 			switch (options.table) {
 				case TableEnum.lessons: {
@@ -45,7 +45,7 @@ export class DataGeneratorRunner extends CommandRunner {
 						StudentsEntity,
 						options.quantity,
 						() => {
-							return { name: faker.person.fullName };
+							return { name: faker.person.fullName() };
 						},
 					);
 					break;
@@ -56,7 +56,7 @@ export class DataGeneratorRunner extends CommandRunner {
 						TeachersEntity,
 						options.quantity,
 						() => {
-							return { name: faker.person.fullName };
+							return { name: faker.person.fullName() };
 						},
 					);
 					break;
@@ -65,7 +65,9 @@ export class DataGeneratorRunner extends CommandRunner {
 			this.logger.log('data generated successfully');
 		} catch (error) {
 			this.logger.error(error);
+			return;
 		} finally {
+			this.logger.log('completion of processing...');
 			if (queryRunner.isTransactionActive) {
 				await queryRunner.rollbackTransaction();
 			}
@@ -73,7 +75,6 @@ export class DataGeneratorRunner extends CommandRunner {
 				await queryRunner.release();
 			}
 		}
-		return;
 	}
 
 	@Option({
@@ -97,7 +98,7 @@ export class DataGeneratorRunner extends CommandRunner {
 	})
 	parseQuantityOption(option: string): number {
 		const parseResult = parseInt(option);
-		if (!parseResult || parseResult < 0 || parseResult < 2 * Math.pow(10, 9)) {
+		if (!parseResult || parseResult < 0 || parseResult > 2 * Math.pow(10, 9)) {
 			throw new Error('quantity must be a positive integer less than 2*10^9');
 		}
 		return parseInt(option);

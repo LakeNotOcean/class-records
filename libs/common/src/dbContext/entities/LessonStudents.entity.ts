@@ -4,19 +4,19 @@ import {
 	Index,
 	JoinColumn,
 	ManyToOne,
-	PrimaryGeneratedColumn,
+	PrimaryColumn,
 } from 'typeorm';
 import { LessonsEntity } from './Lessons.entity';
 import { StudentsEntity } from './Students.entity';
 
-@Index('id_student_id_lesson_pkey', ['idLesson', 'idStudent'], { unique: true })
+@Index('student_id_lesson_id_pkey', ['lessonId', 'studentId'], { unique: true })
 @Entity('lesson_students', { schema: 'class' })
 export class LessonStudentsEntity {
-	@PrimaryGeneratedColumn({ type: 'int', name: 'id_lesson' })
-	idLesson: number;
+	@PrimaryColumn({ type: 'int', name: 'lesson_id' })
+	lessonId: number;
 
-	@PrimaryGeneratedColumn({ type: 'int', name: 'id_student' })
-	idStudent: number;
+	@PrimaryColumn({ type: 'int', name: 'student_id' })
+	studentId: number;
 
 	@Column('boolean', { name: 'visit', default: () => 'false' })
 	visit: boolean;
@@ -24,12 +24,12 @@ export class LessonStudentsEntity {
 	@ManyToOne(() => LessonsEntity, (lessons) => lessons.lessonStudents, {
 		onDelete: 'CASCADE',
 	})
-	@JoinColumn([{ name: 'id_lesson', referencedColumnName: 'id' }])
-	idLesson2: LessonsEntity;
+	@JoinColumn([{ name: 'lesson_id', referencedColumnName: 'id' }])
+	lessonsEntity: LessonsEntity;
 
 	@ManyToOne(() => StudentsEntity, (students) => students.lessonStudents, {
 		onDelete: 'CASCADE',
 	})
-	@JoinColumn([{ name: 'id_student', referencedColumnName: 'id' }])
-	idStudent2: StudentsEntity;
+	@JoinColumn([{ name: 'student_id', referencedColumnName: 'id' }])
+	studentsEntity: StudentsEntity;
 }

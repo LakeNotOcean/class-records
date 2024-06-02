@@ -1,8 +1,10 @@
 import {
+	createAndFillArray,
 	getRandomDate,
 	getRandomElementsFromArray,
 	LessonsEntity,
 	LessonStudentsEntity,
+	MAX_BULK,
 	StudentsEntity,
 	TeachersEntity,
 } from '@common';
@@ -35,45 +37,85 @@ export async function lessonsTableGeneration(
 	const maxDate = new Date();
 	maxDate.setFullYear(new Date().getFullYear() + 2);
 
-	for (let i = 0; i < quantity; ++i) {
+	for (let i = 0; i < quantity; i += MAX_BULK) {
+		const data = createAndFillArray(
+			quantity > MAX_BULK ? MAX_BULK : quantity,
+			() => {
+				return {
+					date: getRandomDate(minDate, maxDate),
+					status: Math.random() < 0.8 ? true : false,
+				};
+			},
+		);
 		promises.push(
 			manager
 				.createQueryBuilder()
 				.insert()
 				.into(LessonsEntity)
-				.values({
-					date: getRandomDate(minDate, maxDate),
-					status: Math.random() < 0.8 ? true : false,
-				})
+				.values(data)
 				.returning(['id'])
 				.execute(),
 		);
 	}
 
-	const insertResults = await Promise.all(promises);
-	for await (const insertResult of insertResults) {
-		const selectedTeachersIds = getRandomElementsFromArray(teachersIds);
-		const selectedStudentsIds = getRandomElementsFromArray(studentsIds);
-
-		const lessonId = insertResult.raw[0].id as number;
-		for await (const teacherId of selectedTeachersIds) {
-			await manager
-				.createQueryBuilder('lesson_teachers', 'lt')
-				.insert()
-				.values({ id_lesson: lessonId, id_teacher: teacherId })
-				.execute();
+	const promiseResults = await Promise.allSettled(promises);
+	const insertResults = promiseResults.map((r) => {
+		if (r.status == 'rejected') {
+			throw new Error(r.reason);
 		}
-		for await (const studentId of selectedStudentsIds) {
-			await manager
-				.createQueryBuilder()
-				.insert()
-				.into(LessonStudentsEntity)
-				.values({
-					idLesson: lessonId,
-					idStudent: studentId,
-					visit: Math.random() < 0.8 ? true : false,
-				})
-				.execute();
+		return r.value;
+	});
+
+	for await (const insertResult of insertResults) {
+		const rawInsertResult = insertResult.raw;
+		const shuffledTeachersIds: number[] = [];
+		const shuffledStudentsIds: number[] = [];
+
+		for (let i = 0; i < rawInsertResult.length; i += MAX_BULK) {
+			for await (const raw of rawInsertResult) {
+				const selectedTeachersIds = getRandomElementsFromArray(
+					teachersIds,
+					3,
+					shuffledTeachersIds,
+				);
+				const selectedStudentsIds = getRandomElementsFromArray(
+					studentsIds,
+					60,
+					shuffledStudentsIds,
+				);
+
+				const lessonId = raw.id as number;
+				const bulkInsertTeachersData: object[] = [];
+				const bulkInsertStudentsData: object[] = [];
+				for await (const teacherId of selectedTeachersIds) {
+					bulkInsertTeachersData.push({
+						lesson_id: lessonId,
+						teacher_id: teacherId,
+					});
+					await manager
+						.createQueryBuilder('lesson_teachers', 'lt')
+						.insert()
+						.values({ lesson_id: lessonId, teacher_id: teacherId })
+						.execute();
+				}
+				for await (const studentId of selectedStudentsIds) {
+					bulkInsertStudentsData.push({
+						lessonId: lessonId,
+						studentId: studentId,
+						visit: Math.random() < 0.8 ? true : false,
+					});
+					await manager
+						.createQueryBuilder()
+						.insert()
+						.into(LessonStudentsEntity)
+						.values({
+							lessonId: lessonId,
+							studentId: studentId,
+							visit: Math.random() < 0.8 ? true : false,
+						})
+						.execute();
+				}
+			}
 		}
 	}
 	await queryRunner.commitTransaction();

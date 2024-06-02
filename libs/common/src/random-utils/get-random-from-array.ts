@@ -4,21 +4,25 @@ import { shuffleArray } from './shuffle-array';
 export function getRandomElementsFromArray<T>(
 	arr: T[],
 	maxNumberOfElements?: number,
+	shuffledArr?: T[],
 ): T[] {
-	const shuffledArray = [...arr];
-	shuffleArray(shuffledArray);
-	const len = shuffleArray.length;
+	if (!shuffledArr || shuffledArr.length == 0) {
+		shuffledArr = [...arr];
+		shuffleArray(shuffledArr);
+	}
+	const len = shuffledArr.length;
 
 	const numberOfSelectedElements = getRandomInt(
+		1,
 		maxNumberOfElements && len > maxNumberOfElements
-			? maxNumberOfElements + 1
-			: len + 1,
+			? maxNumberOfElements
+			: len,
 	);
 
 	const selectedElements: T[] = [];
 
 	for (let j = 0; j < numberOfSelectedElements; ++j) {
-		selectedElements.push(shuffledArray.pop());
+		selectedElements.push(shuffledArr.pop());
 	}
 
 	return selectedElements;

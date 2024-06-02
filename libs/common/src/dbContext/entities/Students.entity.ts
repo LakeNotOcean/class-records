@@ -18,7 +18,7 @@ export class StudentsEntity {
 
 	@OneToMany(
 		() => LessonStudentsEntity,
-		(lessonStudents) => lessonStudents.idStudent2,
+		(lessonStudents) => lessonStudents.studentsEntity,
 	)
 	lessonStudents: LessonStudentsEntity[];
 }

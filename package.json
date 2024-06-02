@@ -2,15 +2,16 @@
 	"name": "class-records",
 	"scripts": {
 		"MIGRATION SCRIPTS": "",
-		"typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d ./libs/common/src/dbContext/database-config.ts",
+		"typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d ./libs/common/src/dbContext/database-migrations-config.ts",
 		"migration:generate-dev": "cross-env NODE_ENV=dev npm run typeorm:cli migration:generate -p libs/common/src/dbContext/migrations/migration",
 		"migration:run-dev": "cross-env NODE_ENV=dev npm run typeorm:cli migration:run",
 		"GENERATION SCRIPTS": "",
 		"data-generator:build": "nest build data-generator",
 		"data-generator": "cross-env NODE_ENV=dev node dist/apps/data-generator/main.js",
-		"data-generator:debug": "cross-env NODE_ENV=dev nest start data-generator  --debug --watch -- -t teachers -q 10000"
+		"data-generator:cleansing": "cross-env NODE_ENV=dev node dist/apps/data-generator/main.js data-cleansing -t teachers",
+		"data-generator:debug": "cross-env NODE_ENV=dev nest start data-generator data-cleansing --debug --watch -- -t teachers"
 	},
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Project root, used to migrate the database and storage general logic.",
 	"keywords": [
 		"typeorm",
@@ -27,6 +28,7 @@
 		"dotenv": "^16.4.5",
 		"nest-commander": "^3.13.0",
 		"pg": "^8.11.5",
+		"ts-node": "^10.9.2",
 		"tsconfig-paths": "^4.2.0",
 		"typeorm": "^0.3.20"
 	},

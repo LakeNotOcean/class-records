@@ -28,15 +28,18 @@ export class LessonsEntity {
 
 	@OneToMany(
 		() => LessonStudentsEntity,
-		(lessonStudents) => lessonStudents.idLesson2,
+		(lessonStudents) => lessonStudents.studentsEntity,
+		{ onDelete: 'CASCADE' },
 	)
 	lessonStudents: LessonStudentsEntity[];
 
-	@ManyToMany(() => TeachersEntity, (teachers) => teachers.lessons)
+	@ManyToMany(() => TeachersEntity, (teachers) => teachers.lessons, {
+		onDelete: 'CASCADE',
+	})
 	@JoinTable({
 		name: 'lesson_teachers',
-		joinColumns: [{ name: 'id_lesson', referencedColumnName: 'id' }],
-		inverseJoinColumns: [{ name: 'id_teacher', referencedColumnName: 'id' }],
+		joinColumns: [{ name: 'lesson_id', referencedColumnName: 'id' }],
+		inverseJoinColumns: [{ name: 'teacher_id', referencedColumnName: 'id' }],
 		schema: 'class',
 	})
 	teachers: TeachersEntity[];

@@ -9,17 +9,16 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { DataSource } from 'typeorm';
-import { clearTable } from './clearing-func/clear-table';
+import { clearTable } from './cleansing-func/clear-table';
 import { dbInitialization } from './utils/db-initialization';
-
 @Command({
-	name: 'data clearing',
+	name: 'data-cleansing',
 	description: 'function to clear data in tables',
 	options: { isDefault: false },
 })
-export class DataClearingRunner extends CommandRunner {
+export class DataClearingCommand extends CommandRunner {
 	private readonly dataSource: DataSource;
-	private readonly logger = new JsonLogger(DataClearingRunner.name);
+	private readonly logger = new JsonLogger(DataClearingCommand.name);
 
 	constructor(configService: ConfigService) {
 		super();
@@ -31,6 +30,7 @@ export class DataClearingRunner extends CommandRunner {
 		options: { table: TableEnum },
 	): Promise<void> {
 		const queryRunner = await dbInitialization(this.dataSource, this.logger);
+		this.logger.log('start of cleaning...');
 
 		try {
 			await clearTable(queryRunner, LessonsEntity);
@@ -49,7 +49,9 @@ export class DataClearingRunner extends CommandRunner {
 			}
 		} catch (error) {
 			this.logger.error(error);
+			return;
 		} finally {
+			this.logger.log('completion of processing...');
 			if (queryRunner.isTransactionActive) {
 				await queryRunner.rollbackTransaction();
 			}
@@ -67,7 +69,7 @@ export class DataClearingRunner extends CommandRunner {
 	})
 	parseTableOption(option: string): TableEnum {
 		if (!Object.values<string>(TableEnum).includes(option)) {
-			throw new Error('option must be a valid table');
+			throw new Error('option must be a valid table\n');
 		}
 		return option as TableEnum;
 	}
