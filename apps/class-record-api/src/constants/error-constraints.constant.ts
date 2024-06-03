@@ -4,3 +4,8 @@ export const IS_NOT_A_STRING: errorConstraintType = {
 	key: 'valueIsNotAString',
 	message: 'property must be a valid string',
 };
+
+export const IS_NOT_AN_ARRAY: errorConstraintType = {
+	key: 'valueIsNotAnArray',
+	message: 'property must be a valid array',
+};

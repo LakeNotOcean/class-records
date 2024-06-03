@@ -6,7 +6,7 @@ import { IsDateString, IsOptional } from 'class-validator';
 export type dateValueDecOptions = {
 	isRequired?: boolean;
 };
-export function dateValueDecorator(opt: dateValueDecOptions) {
+export function dateValueDec(opt: dateValueDecOptions) {
 	return applyDecorators(
 		ApiProperty({ required: opt.isRequired, type: Date }),
 		opt.isRequired ? IsDateString() : IsOptional(),

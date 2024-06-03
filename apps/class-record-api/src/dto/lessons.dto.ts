@@ -1,7 +1,7 @@
 import { ApiExtraModels } from '@nestjs/swagger';
 import { arrayValueDec } from '../decorators/values-decorators/array-value.decorator';
 import { booleanIntValueDec } from '../decorators/values-decorators/boolean-int-value.decorator';
-import { dateValueDecorator } from '../decorators/values-decorators/date-value.decorator';
+import { dateValueDec } from '../decorators/values-decorators/date-value.decorator';
 import { intValueDec } from '../decorators/values-decorators/int-value.decorator';
 import { stringValueDec } from '../decorators/values-decorators/string-value.decorator';
 import { StudentDto } from './student.dto';
@@ -15,7 +15,7 @@ export class LessonDto {
 	@intValueDec({ isRequired: true })
 	id: number;
 
-	@dateValueDecorator({ isRequired: true })
+	@dateValueDec({ isRequired: true })
 	date: string;
 
 	@stringValueDec({ isRequired: true })

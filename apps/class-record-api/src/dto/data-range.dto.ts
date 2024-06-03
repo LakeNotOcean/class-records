@@ -6,13 +6,13 @@ import {
 	toDate,
 } from '@common';
 import { DATE_REGEX } from '../constants/regex.constant';
-import { dateValueDecorator } from '../decorators/values-decorators/date-value.decorator';
+import { dateValueDec } from '../decorators/values-decorators/date-value.decorator';
 import { getArrayFromString } from '../utils/get-array-from-string';
 
 export class DateRangeDto {
-	@dateValueDecorator({ isRequired: true })
+	@dateValueDec({ isRequired: true })
 	start: Date;
-	@dateValueDecorator({ isRequired: true })
+	@dateValueDec({ isRequired: true })
 	end: Date;
 	constructor(args: Required<DateRangeDto>) {
 		Object.assign(this, args);

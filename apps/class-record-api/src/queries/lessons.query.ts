@@ -1,6 +1,6 @@
 import { booleanIntValueDec } from '../decorators/values-decorators/boolean-int-value.decorator';
-import { dateOrRangeValueDec } from '../decorators/values-decorators/date-or-range-value.decorator';
-import { intOrRangeValueDec } from '../decorators/values-decorators/int-or-range-value.decorator';
+import { dateOrRangeValueDec } from '../decorators/values-decorators/complex-values/date-or-range-value.decorator';
+import { intOrRangeValueDec } from '../decorators/values-decorators/complex-values/int-or-range-value.decorator';
 import { intSeparatedByCommasValueDec } from '../decorators/values-decorators/int-separated-by-commas-value.decorator';
 import { intValueDec } from '../decorators/values-decorators/int-value.decorator';
 import { DateRangeDto } from '../dto/data-range.dto';
