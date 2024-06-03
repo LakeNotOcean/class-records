@@ -45,7 +45,7 @@ export function dateOrRangeValueDec(opt: dateValueDecOptions) {
 						key: 'parseSingleDateResult',
 						message: parseSingleDateResult.errorMessage,
 					},
-					{ key: 'parseResult', message: parseResult.errorMessage },
+					{ key: 'parsePairResult', message: parseResult.errorMessage },
 				],
 			);
 			throw new ValidationException([error]);

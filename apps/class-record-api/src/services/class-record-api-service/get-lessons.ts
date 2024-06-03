@@ -15,7 +15,7 @@ export async function getLessonsFromDb(
 	entityManager: EntityManager,
 	lessonsQuery: LessonsQuery,
 ) {
-	const [start, end] = await selectIdsForRange(
+	const [startId, endId] = await selectIdsForRange(
 		entityManager,
 		LessonsEntity,
 		'id',
@@ -97,7 +97,10 @@ export async function getLessonsFromDb(
 			count: lessonsQuery.studentsCount,
 		});
 	}
-	build = build.andWhere('l.id between :start and :end', { start, end });
+	build = build.andWhere('l.id between :startId and :endId', {
+		startId,
+		endId,
+	});
 
 	const dbResult = await build.getMany();
 
