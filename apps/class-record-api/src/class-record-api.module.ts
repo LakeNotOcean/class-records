@@ -5,6 +5,7 @@ import { ExceptionsModule } from 'libs/common/src/exceptions';
 import { LoggerModule } from 'nestjs-pino';
 import { ClassRecordApiController } from './class-record-api.controller';
 import { dbModule } from './modules/database.module';
+import { CheckService } from './services/check-service/check.service';
 import { ClassRecordApiService } from './services/class-record-api-service/class-record-api.service';
 
 @Module({
@@ -24,6 +25,6 @@ import { ClassRecordApiService } from './services/class-record-api-service/class
 		dbModule,
 	],
 	controllers: [ClassRecordApiController],
-	providers: [ClassRecordApiService],
+	providers: [ClassRecordApiService, CheckService],
 })
 export class ClassRecordApiModule {}
