@@ -1,4 +1,4 @@
-import { ResultEnum, toInteger } from '@common';
+import { StatusEnum, toInteger } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
@@ -24,7 +24,9 @@ export function intValueDec(opt: intValueDecOptions) {
 		ValidateIf((_obj, value) => value != null && value != undefined),
 		IsInt(),
 		Transform(({ value }) =>
-			toInteger(value).result == ResultEnum.Error ? value : parseInt(value),
+			toInteger(value).getStatus() == StatusEnum.Error
+				? false
+				: parseInt(value),
 		),
 	];
 	if (opt.isRequired) {

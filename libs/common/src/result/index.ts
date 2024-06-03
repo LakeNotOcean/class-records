@@ -1,2 +1,2 @@
-export * from './Result';
-export * from './Result.enum';
+export * from './result';
+export * from './Status.enum';

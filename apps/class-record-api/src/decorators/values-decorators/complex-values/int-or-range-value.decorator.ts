@@ -1,4 +1,4 @@
-import { ResultEnum, toInteger } from '@common';
+import { StatusEnum, toInteger } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, ValidateIf } from 'class-validator';
@@ -31,20 +31,26 @@ export function intOrRangeValueDec(opt: intValueDecOptions) {
 			}
 
 			const rangeFromString = getRangeFromString(value);
-			if (rangeFromString.result == ResultEnum.Success) {
-				return rangeFromString.resultData;
+			if (rangeFromString.getStatus() == StatusEnum.Success) {
+				return rangeFromString.unwrap();
 			}
 
 			const parseIntegerRes = toInteger(value, 0);
-			if (parseIntegerRes.result == ResultEnum.Success) {
-				return parseIntegerRes.resultData;
+			if (parseIntegerRes.getStatus() == StatusEnum.Success) {
+				return parseIntegerRes.unwrap();
 			}
 
 			setValidationErrorConstraint(
 				error,
 				...[
-					{ key: 'rangeFromString', message: rangeFromString.errorMessage },
-					{ key: 'parseIntergerRes', message: parseIntegerRes.errorMessage },
+					{
+						key: 'rangeFromString',
+						message: rangeFromString.getErrorMessage(),
+					},
+					{
+						key: 'parseIntergerRes',
+						message: parseIntegerRes.getErrorMessage(),
+					},
 				],
 			);
 			throw new ValidationException([error]);

@@ -2,7 +2,7 @@ import {
 	createErrorResult,
 	createSuccessResult,
 	Result,
-	ResultEnum,
+	StatusEnum,
 	toInteger,
 } from '@common';
 import { INT_REGEX } from '../constants/regex.constant';
@@ -21,10 +21,10 @@ export class RangeDto {
 
 export function getRangeFromString(rangeString: string): Result<RangeDto> {
 	const numberArr = getArrayFromString(rangeString, 2, INT_REGEX, toInteger);
-	if (numberArr.result == ResultEnum.Error) {
-		return createErrorResult(numberArr.errorMessage);
+	if (numberArr.getStatus() == StatusEnum.Error) {
+		return createErrorResult(numberArr.getErrorMessage());
 	}
-	const resultData = numberArr.resultData;
+	const resultData = numberArr.unwrap();
 	if (resultData.length != 2) {
 		return createErrorResult('there are not two numbers in the string');
 	}

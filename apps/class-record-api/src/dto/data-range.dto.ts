@@ -2,7 +2,7 @@ import {
 	createErrorResult,
 	createSuccessResult,
 	Result,
-	ResultEnum,
+	StatusEnum,
 	toDate,
 } from '@common';
 import { DATE_REGEX } from '../constants/regex.constant';
@@ -28,11 +28,11 @@ export function getDateRangeFromString(
 		DATE_REGEX,
 		toDate,
 	);
-	if (numberArr.result == ResultEnum.Error) {
-		return createErrorResult(numberArr.errorMessage);
+	if (numberArr.getStatus() == StatusEnum.Error) {
+		return createErrorResult(numberArr.getErrorMessage());
 	}
 
-	const resultData = numberArr.resultData;
+	const resultData = numberArr.unwrap();
 	if (resultData.length != 2) {
 		return createErrorResult('there are not two dates in the string');
 	}

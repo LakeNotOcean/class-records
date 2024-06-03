@@ -1,5 +1,5 @@
 import { ValidationError } from '@nestjs/common';
-import { ResultEnum } from '../result';
+import { StatusEnum } from '../result';
 import { ClientException } from './core/exceptions';
 
 export interface RequestValidationError {
@@ -16,7 +16,7 @@ const mapError = (error: ValidationError): RequestValidationError => ({
 
 export class ValidationException extends ClientException {
 	constructor(errors: ValidationError[]) {
-		super(ResultEnum.ValidationException, 'Validation failed', {
+		super(StatusEnum.ValidationException, 'Validation failed', {
 			message: 'some properties were not validated',
 			validationResult: errors.map(mapError),
 		});

@@ -26,10 +26,10 @@ export class ClassRecordApiService {
 			);
 			return new LessonDto({
 				id: r.id,
-				date: toYYYYMMDD(r.date).resultData,
+				date: toYYYYMMDD(r.date).unwrap(),
 				title: r.title,
 				visitCount,
-				status: toIntBoolean(r.status).resultData,
+				status: toIntBoolean(r.status).unwrap(),
 				students: r.lessonStudents.map(
 					(ls) =>
 						new StudentDto({

@@ -18,9 +18,9 @@ export async function addLessons(
 	let continuantionConditionFunc: (currDate: Date) => boolean;
 	let lessonsCount = dto.lessonsCount;
 	if (dto.lastDate) {
-		const lastDateYYYYMMDD = toYYYYMMDD(dto.lastDate).resultData;
+		const lastDateYYYYMMDD = toYYYYMMDD(dto.lastDate).unwrap();
 		continuantionConditionFunc = (currDate: Date) => {
-			return toYYYYMMDD(currDate).resultData <= lastDateYYYYMMDD;
+			return toYYYYMMDD(currDate).unwrap() <= lastDateYYYYMMDD;
 		};
 	} else {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
