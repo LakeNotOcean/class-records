@@ -16,8 +16,7 @@ import {
 export function getDatabaseConfig(
 	configService: ConfigService,
 ): DataSourceOptions {
-	let isLogging = configService.getOrThrow('postgresIsLogging') === 'true';
-	isLogging = true;
+	const isLogging = configService.getOrThrow('postgresIsLogging') === 'true';
 	return {
 		type: 'postgres',
 		host: configService.getOrThrow<string>('postgresHost'),
@@ -27,13 +26,13 @@ export function getDatabaseConfig(
 		database: configService.getOrThrow<string>('postgresDatabase'),
 		schema: configService.getOrThrow<string>('postgresSchema'),
 		synchronize: false,
-		logging: isLogging ? isLogging : ['error'],
+		logging: isLogging,
 		// system pool
 		extra: {
 			max: Number(configService.getOrThrow<number>('postgresClientPool')),
 			idleTimeoutMillis: 30000,
 		},
-		logger: isLogging ? new TypeOrmJsonLogger() : 'simple-console',
+		logger: new TypeOrmJsonLogger(),
 		maxQueryExecutionTime: 1000,
 		migrations: [join(__dirname, 'migrations', '*{.js,.ts}')],
 		entities: [
