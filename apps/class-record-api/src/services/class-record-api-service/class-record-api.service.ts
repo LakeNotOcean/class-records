@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { createSuccessResult, toIntBoolean, toYYYYMMDD } from 'libs/common/src';
+import {
+	createEmptyResult,
+	createSuccessResult,
+	toIntBoolean,
+	toYYYYMMDD,
+} from 'libs/common/src';
 import { EntityManager } from 'typeorm';
+import { AddLessonsDto } from '../../dto/add-lessons.dto';
 import { LessonDto } from '../../dto/lessons.dto';
 import { StudentDto } from '../../dto/student.dto';
 import { TeacherDto } from '../../dto/teacher.dto';
 import { LessonsQuery } from '../../queries/lessons.query';
 import { CheckService } from '../check-service/check.service';
+import { addLessonsToDb } from './add-lessons';
 import { getLessonsFromDb } from './get-lessons';
 
 @Injectable()
@@ -44,5 +51,15 @@ export class ClassRecordApiService {
 			});
 		});
 		return createSuccessResult(dtoResult);
+	}
+
+	async addLessons(entityManager: EntityManager, dto: AddLessonsDto) {
+		await entityManager.queryRunner.startTransaction();
+
+		await addLessonsToDb(entityManager, this.checkService, dto);
+
+		await entityManager.queryRunner.commitTransaction();
+
+		return createEmptyResult();
 	}
 }

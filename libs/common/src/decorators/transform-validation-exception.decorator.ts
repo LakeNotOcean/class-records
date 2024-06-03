@@ -7,6 +7,6 @@ export function TransformWithValidationErrorDec(
 	return Transform(({ key, value }) => {
 		const error = new ValidationError();
 		error.property = key;
-		transformFn(key, value, error);
+		return transformFn(key, value, error);
 	});
 }

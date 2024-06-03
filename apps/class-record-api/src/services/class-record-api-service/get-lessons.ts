@@ -3,6 +3,7 @@ import {
 	LessonStudentsEntity,
 	StudentsEntity,
 	TeachersEntity,
+	toYYYYMMDD,
 } from '@common';
 import { EntityManager } from 'typeorm';
 import { STUDENT_COUNT } from '../../constants/db.constant';
@@ -25,17 +26,19 @@ export async function getLessonsFromDb(
 
 	let build = entityManager
 		.createQueryBuilder()
-		.select(['l.id', 'l.date', 'l.status'])
+		.select(['l.id', 'l.date', 'l.status', 'l.title'])
 		.from(LessonsEntity, 'l');
 
 	if (lessonsQuery.date) {
 		if (lessonsQuery.date instanceof DateRangeDto) {
-			build = build.andWhere('l.date between :start and :end', {
-				start: lessonsQuery.date.start,
-				end: lessonsQuery.date.end,
+			build = build.andWhere('l.date >= :startDate and l.date<= :endDate', {
+				startDate: toYYYYMMDD(lessonsQuery.date.start).unwrap(),
+				endDate: toYYYYMMDD(lessonsQuery.date.end).unwrap(),
 			});
 		} else {
-			build = build.andWhere('l.date = :date', { date: lessonsQuery.date });
+			build = build.andWhere('l.date = :date', {
+				date: toYYYYMMDD(lessonsQuery.date).unwrap(),
+			});
 		}
 	}
 
@@ -66,7 +69,7 @@ export async function getLessonsFromDb(
 		'l.id = ls.lessonId',
 	);
 	build = build.leftJoinAndMapOne(
-		'ls.studentId',
+		'ls.studentsEntity',
 		StudentsEntity,
 		's',
 		'ls.studentId = s.id',
@@ -75,7 +78,7 @@ export async function getLessonsFromDb(
 		(qb) => {
 			return qb
 				.select(['ls2.lessonId as lessonId'])
-				.addSelect('COUNT(ls2.studentId)', STUDENT_COUNT)
+				.addSelect('COUNT(ls2.studentId)::int', STUDENT_COUNT)
 				.from(LessonStudentsEntity, 'ls2')
 				.groupBy('ls2.lessonId');
 		},
@@ -86,16 +89,17 @@ export async function getLessonsFromDb(
 	if (lessonsQuery.studentsCount) {
 		if (lessonsQuery.studentsCount instanceof RangeDto) {
 			build = build.andWhere(
-				'ls2.' + STUDENT_COUNT + ' between :start and :end',
+				'ls2.' + STUDENT_COUNT + ' between :startCount and :endCount',
 				{
-					start: lessonsQuery.studentsCount.start,
-					end: lessonsQuery.studentsCount.end,
+					startCount: lessonsQuery.studentsCount.start,
+					endCount: lessonsQuery.studentsCount.end,
 				},
 			);
+		} else {
+			build = build.andWhere('ls2.' + STUDENT_COUNT + ' = :studentCount', {
+				studentCount: lessonsQuery.studentsCount,
+			});
 		}
-		build = build.andWhere('ls2.' + STUDENT_COUNT + ' = :count', {
-			count: lessonsQuery.studentsCount,
-		});
 	}
 	build = build.andWhere('l.id between :startId and :endId', {
 		startId,

@@ -7,7 +7,7 @@ import {
 	nextWeekLessonsInsert,
 } from './week-lessons-insert-func';
 
-export async function addLessons(
+export async function addLessonsToDb(
 	entityManager: EntityManager,
 	checkService: CheckService,
 	dto: AddLessonsDto,

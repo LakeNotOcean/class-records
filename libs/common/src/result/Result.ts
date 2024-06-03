@@ -19,7 +19,7 @@ export class Result<T> {
 	}
 	unwrap(): T {
 		if (this.status != StatusEnum.Success) {
-			throw new Error('the operation status was unsuccessful');
+			throw new Error(this.errorMessage);
 		}
 		return this.resultData;
 	}

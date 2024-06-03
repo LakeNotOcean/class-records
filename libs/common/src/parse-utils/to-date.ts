@@ -16,7 +16,7 @@ export function isValidDate(date: Date): boolean {
 }
 
 export function toYYYYMMDD(date: Date): Result<string> {
-	if (isValidDate(date)) {
+	if (!isValidDate(date)) {
 		return createErrorResult('value is not valid date');
 	}
 	const offset = date.getTimezoneOffset();

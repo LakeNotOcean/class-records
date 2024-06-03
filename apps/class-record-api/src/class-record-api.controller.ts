@@ -24,20 +24,25 @@ export class ClassRecordApiController extends BaseApiController {
 		isResultArray: true,
 		isTransaction: true,
 	})
-	getlessons(
+	async getlessons(
 		@TransactionManager() entityManager: EntityManager,
 		@Query() lessonsQuery: LessonsQuery,
 	) {
-		return this.classRecordApiService.getLessons(entityManager, lessonsQuery);
+		return (
+			await this.classRecordApiService.getLessons(entityManager, lessonsQuery)
+		).unwrap();
 	}
+
 	@PostRequestDec({
 		description: 'add lesson',
 		responseString: 'data added successfully',
 		route: 'lessons',
 		isTransaction: true,
 	})
-	addLessons(
+	async addLessons(
 		@TransactionManager() entityManager: EntityManager,
 		@Body(new AddLessonsValidationPipe()) body: AddLessonsDto,
-	) {}
+	) {
+		await this.classRecordApiService.addLessons(entityManager, body);
+	}
 }

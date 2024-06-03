@@ -4,6 +4,6 @@ export function getIntRangeValueDescription(): SchemaObject {
 	return {
 		type: 'string',
 		example: '1,3',
-		description: 'range from 1 to 3 inclusive',
+		description: 'range from start to end inclusive "1,3"',
 	};
 }
