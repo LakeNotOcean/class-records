@@ -1,20 +1,23 @@
-import { LessonsEntity } from '@common';
-import { EntityManager } from 'typeorm';
+import { EntityManager, EntityTarget } from 'typeorm';
 
-export async function selectIdsForRange(
+export async function selectIdsForRange<T>(
 	entityManager: EntityManager,
+	entity: EntityTarget<T>,
+	idField: string,
 	limit: number,
 	offset: number,
 ): Promise<[number, number]> {
-	const lessons = await entityManager
+	const entities = await entityManager
 		.createQueryBuilder()
-		.select('l.id')
-		.from(LessonsEntity, 'l')
+		.select(`e.${idField}`)
+		.from(entity, 'e')
 		.offset(offset)
 		.limit(limit)
-		.orderBy('l.id')
+		.orderBy(`e.${idField}`)
 		.getMany();
-	const start = lessons[0] ? lessons[0].id : 0;
-	const end = lessons[lessons.length - 1] ? lessons[lessons.length - 1].id : 0;
+	const start = entities[0] ? entities[0][idField] : 0;
+	const end = entities[entities.length - 1]
+		? entities[entities.length - 1][idField]
+		: 0;
 	return [start, end];
 }

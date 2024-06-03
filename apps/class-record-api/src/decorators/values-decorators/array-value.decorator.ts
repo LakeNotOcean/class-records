@@ -2,6 +2,7 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+	ArrayMaxSize,
 	IsArray,
 	IsNotEmpty,
 	IsOptional,
@@ -13,6 +14,7 @@ import {
 export type arrayValueDecOptions = {
 	targetEntity: NonNullable<Function>;
 	isRequired: boolean;
+	maxSize?:number;
 };
 
 export function arrayValueDec(opt: arrayValueDecOptions) {
@@ -34,5 +36,8 @@ export function arrayValueDec(opt: arrayValueDecOptions) {
 		ValidateNested({ each: true }),
 		Type(() => opt.targetEntity),
 	);
+	if (opt.maxSize) {
+		decorators.push(ArrayMaxSize(opt.maxSize));
+	}
 	return applyDecorators(...decorators);
 }

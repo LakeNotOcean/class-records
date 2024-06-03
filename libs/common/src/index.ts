@@ -7,3 +7,4 @@ export * from './loggers';
 export * from './parse-utils';
 export * from './random-utils';
 export * from './result';
+export * from './time-utils';

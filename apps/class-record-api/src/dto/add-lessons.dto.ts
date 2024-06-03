@@ -1,17 +1,15 @@
-import { ApiExtraModels, PickType } from '@nestjs/swagger';
 import { arrayValueDec } from '../decorators/values-decorators/array-value.decorator';
 import { dateValueDec } from '../decorators/values-decorators/date-value.decorator';
 import { intValueDec } from '../decorators/values-decorators/int-value.decorator';
+import { stringValueDec } from '../decorators/values-decorators/string-value.decorator';
 import { weekDaysArrayValueDec } from '../decorators/values-decorators/week-days-array-value.decorator';
-import { LessonDto } from './lessons.dto';
 
-@ApiExtraModels(LessonDto)
-export class AddLessonsDto extends PickType<LessonDto, keyof LessonDto>(
-	LessonDto,
-	['title'],
-) {
-	@arrayValueDec({ isRequired: true, targetEntity: Number })
+export class AddLessonsDto {
+	@arrayValueDec({ isRequired: true, targetEntity: Number, maxSize: 100 })
 	teachersIds: number[];
+
+	@stringValueDec({ isRequired: true, maxLength: 100 })
+	title: string;
 
 	@weekDaysArrayValueDec({ isRequired: true })
 	days: number[];

@@ -4,8 +4,8 @@ import { generalConfig, getPinoLoggerConfig } from 'libs/common/src';
 import { ExceptionsModule } from 'libs/common/src/exceptions';
 import { LoggerModule } from 'nestjs-pino';
 import { ClassRecordApiController } from './class-record-api.controller';
-import { ClassRecordApiService } from './class-record-api.service';
 import { dbModule } from './modules/database.module';
+import { ClassRecordApiService } from './services/class-record-api-service/class-record-api.service';
 
 @Module({
 	imports: [

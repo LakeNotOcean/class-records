@@ -18,7 +18,7 @@ export class LessonDto {
 	@dateValueDec({ isRequired: true })
 	date: string;
 
-	@stringValueDec({ isRequired: true })
+	@stringValueDec({ isRequired: true, maxLength: 100 })
 	title: string;
 
 	@booleanIntValueDec({ isRequired: true, isNumber: true })

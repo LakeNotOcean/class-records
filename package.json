@@ -15,8 +15,8 @@
 		"class-record-api": "cross-env NODE_ENV=dev nest start class-record-api",
 		"class-record-api:debug": "cross-env NODE_ENV=dev nest start class-record-api --debug --watch"
 	},
-	"version": "0.0.2",
-	"description": "Project root, used to migrate the database and storage general logic.",
+	"version": "0.1.0",
+	"description": "Class records monorepo project",
 	"keywords": [
 		"typeorm",
 		"migration"
