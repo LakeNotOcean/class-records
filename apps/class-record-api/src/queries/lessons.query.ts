@@ -1,7 +1,8 @@
-import { booleanIntValueDec } from '../decorators/boolean-int-value.decorator';
-import { dateOrRangeValueDec } from '../decorators/date-or-range-value.decorator';
-import { intOrRangeValueDec } from '../decorators/int-or-range-value.decorator';
-import { intValueDec } from '../decorators/int-value.decorator';
+import { booleanIntValueDec } from '../decorators/values-decorators/boolean-int-value.decorator';
+import { dateOrRangeValueDec } from '../decorators/values-decorators/date-or-range-value.decorator';
+import { intOrRangeValueDec } from '../decorators/values-decorators/int-or-range-value.decorator';
+import { intSeparatedByCommasValueDec } from '../decorators/values-decorators/int-separated-by-commas-value.decorator';
+import { intValueDec } from '../decorators/values-decorators/int-value.decorator';
 import { DateRangeDto } from '../dto/data-range.dto';
 import { RangeDto } from '../dto/range.dto';
 
@@ -12,6 +13,9 @@ export class LessonsQuery {
 	@booleanIntValueDec({ isRequired: false })
 	status?: boolean;
 
+	@intSeparatedByCommasValueDec({ isRequired: false })
+	teachersIds?: number[];
+
 	@intOrRangeValueDec({ isRequired: false })
 	studentsCount?: number[] | RangeDto;
 
@@ -19,5 +23,5 @@ export class LessonsQuery {
 	page = 1;
 
 	@intValueDec({ isRequired: false, minValue: 1, maxValue: 100 })
-	lessons = 5;
+	lessonsPerPage = 5;
 }

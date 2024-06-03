@@ -22,6 +22,7 @@ export function intValueDec(opt: intValueDecOptions) {
 		ApiProperty({ required: opt.isRequired, type: 'integer' }),
 		opt.isRequired ? IsNotEmpty() : IsOptional(),
 		ValidateIf((_obj, value) => value != null && value != undefined),
+		IsInt(),
 		Transform(({ value }) =>
 			toInteger(value).result == ResultEnum.Error ? value : parseInt(value),
 		),

@@ -9,16 +9,16 @@ import {
 @ValidatorConstraint({ name: 'isBooleanInt', async: false })
 export class BooleanIntValudator implements ValidatorConstraintInterface {
 	validate(
-		value: string,
+		value: unknown,
 		_validationArguments?: ValidationArguments,
 	): boolean | Promise<boolean> {
-		if (value == '0' || value == '1') {
+		if (typeof value === 'boolean') {
 			return true;
 		}
 		return false;
 	}
 	defaultMessage?(_validationArguments?: ValidationArguments): string {
-		return 'value must be 1 or 0';
+		return "value must be '1' or '0'";
 	}
 }
 

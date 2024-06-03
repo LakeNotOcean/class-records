@@ -9,7 +9,11 @@
 		"data-generator:build": "nest build data-generator",
 		"data-generator": "cross-env NODE_ENV=dev node dist/apps/data-generator/main.js",
 		"data-generator:cleansing": "cross-env NODE_ENV=dev node dist/apps/data-generator/main.js data-cleansing -t teachers",
-		"data-generator:debug": "cross-env NODE_ENV=dev nest start data-generator data-cleansing --debug --watch -- -t teachers"
+		"data-generator:debug": "cross-env NODE_ENV=dev nest start data-generator data-cleansing --debug --watch -- -t teachers",
+		"API SCRIPTS": "",
+		"class-record-api:build": "nest build class-record-api",
+		"class-record-api": "cross-env NODE_ENV=dev nest start class-record-api",
+		"class-record-api:debug": "cross-env NODE_ENV=dev nest start class-record-api --debug --watch"
 	},
 	"version": "0.0.2",
 	"description": "Project root, used to migrate the database and storage general logic.",
@@ -23,20 +27,25 @@
 		"@faker-js/faker": "^8.4.1",
 		"@nestjs/common": "^10.3.8",
 		"@nestjs/config": "^3.2.2",
+		"@nestjs/platform-express": "^10.3.8",
 		"@nestjs/swagger": "^7.3.1",
 		"@nestjs/typeorm": "^10.0.2",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.1",
 		"cross-env": "^7.0.3",
 		"dotenv": "^16.4.5",
+		"express": "^4.19.2",
 		"nest-commander": "^3.13.0",
 		"nestjs-pino": "^4.1.0",
 		"pg": "^8.11.5",
+		"pino-pretty": "^11.1.0",
 		"ts-node": "^10.9.2",
 		"tsconfig-paths": "^4.2.0",
 		"typeorm": "^0.3.20"
 	},
 	"devDependencies": {
+		"@types/express": "^4.17.21",
+		"@types/pg": "^8.11.6",
 		"@typescript-eslint/eslint-plugin": "^7.11.0",
 		"eslint": "^8.56.0",
 		"ts-loader": "^9.5.1"

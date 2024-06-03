@@ -1,14 +1,17 @@
 import { ApiExtraModels } from '@nestjs/swagger';
-import { arrayValueDec } from '../decorators/array-value.decorator';
-import { booleanIntValueDec } from '../decorators/boolean-int-value.decorator';
-import { dateValueDecorator } from '../decorators/date-value.decorator';
-import { intValueDec } from '../decorators/int-value.decorator';
-import { stringValueDec } from '../decorators/string-value.decorator';
+import { arrayValueDec } from '../decorators/values-decorators/array-value.decorator';
+import { booleanIntValueDec } from '../decorators/values-decorators/boolean-int-value.decorator';
+import { dateValueDecorator } from '../decorators/values-decorators/date-value.decorator';
+import { intValueDec } from '../decorators/values-decorators/int-value.decorator';
+import { stringValueDec } from '../decorators/values-decorators/string-value.decorator';
 import { StudentDto } from './student.dto';
 import { TeacherDto } from './teacher.dto';
 
 @ApiExtraModels(StudentDto, TeacherDto)
-export class LessonsDto {
+export class LessonDto {
+	constructor(args: Required<LessonDto>) {
+		Object.assign(this, args);
+	}
 	@intValueDec({ isRequired: true })
 	id: number;
 
@@ -18,7 +21,7 @@ export class LessonsDto {
 	@stringValueDec({ isRequired: true })
 	title: string;
 
-	@booleanIntValueDec({ isRequired: true })
+	@booleanIntValueDec({ isRequired: true, isNumber: true })
 	status: number;
 
 	@intValueDec({ isRequired: true })

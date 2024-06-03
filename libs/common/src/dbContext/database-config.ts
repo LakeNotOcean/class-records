@@ -16,7 +16,8 @@ import {
 export function getDatabaseConfig(
 	configService: ConfigService,
 ): DataSourceOptions {
-	const isLogging = configService.getOrThrow('postgresIsLogging') === 'true';
+	let isLogging = configService.getOrThrow('postgresIsLogging') === 'true';
+	isLogging = true;
 	return {
 		type: 'postgres',
 		host: configService.getOrThrow<string>('postgresHost'),

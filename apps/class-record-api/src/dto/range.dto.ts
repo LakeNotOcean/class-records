@@ -5,8 +5,8 @@ import {
 	ResultEnum,
 	toInteger,
 } from '@common';
-import { INT_REGEX } from '../constants/regex';
-import { intValueDec } from '../decorators/int-value.decorator';
+import { INT_REGEX } from '../constants/regex.constant';
+import { intValueDec } from '../decorators/values-decorators/int-value.decorator';
 import { getArrayFromString } from '../utils/get-array-from-string';
 
 export class RangeDto {
@@ -28,7 +28,7 @@ export function getRangeFromString(rangeString: string): Result<RangeDto> {
 	if (resultData.length != 2) {
 		return createErrorResult('there are not two numbers in the string');
 	}
-	if (resultData[0] < resultData[1]) {
+	if (resultData[0] > resultData[1]) {
 		return createErrorResult(
 			'the first value in the range must be greater than the second',
 		);

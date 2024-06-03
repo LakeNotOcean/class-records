@@ -3,7 +3,7 @@ import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.inte
 export function getDateRangeValueDescription(): SchemaObject {
 	return {
 		type: 'string',
-		example: 'YYYY-MM-DD,YYYY-MMM-DD',
+		example: '2020-03-12,2021-07-30',
 		description: 'range from first date to second date inclusive',
 	};
 }

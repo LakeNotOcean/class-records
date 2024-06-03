@@ -8,11 +8,11 @@ import {
 export function getArrayFromString<T>(
 	stringValue: string,
 	maxValuesInString: number,
-	patternForValue: RegExp,
+	patternForValue: string | RegExp,
 	parseFunction: (s: string) => Result<T>,
 ): Result<T[]> {
 	const regex = new RegExp(
-		'/^(' + patternForValue + ')(,' + patternForValue + ')*$',
+		'^(' + patternForValue + ')(,(' + patternForValue + '))*$',
 	);
 	if (!regex.test(stringValue)) {
 		return createErrorResult('the string does not match the pattern');
