@@ -26,7 +26,7 @@ export class LessonsEntity {
 	@Column('boolean', { name: 'status', default: () => 'false' })
 	status: boolean;
 
-	@Column('character varying', { name: 'title', length: 100 })
+	@Column('character varying', { name: 'title', length: 100, nullable: false })
 	title: string;
 
 	@OneToMany(

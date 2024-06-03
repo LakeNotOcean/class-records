@@ -8,6 +8,7 @@ import {
 	StudentsEntity,
 	TeachersEntity,
 } from '@common';
+import { faker } from '@faker-js/faker';
 import { InsertResult, QueryRunner } from 'typeorm';
 
 export async function lessonsTableGeneration(
@@ -44,6 +45,7 @@ export async function lessonsTableGeneration(
 				return {
 					date: getRandomDate(minDate, maxDate),
 					status: Math.random() < 0.8 ? true : false,
+					title: faker.music.songName(),
 				};
 			},
 		);
