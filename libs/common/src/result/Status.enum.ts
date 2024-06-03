@@ -1,4 +1,4 @@
-export enum ResultEnum {
+export enum StatusEnum {
 	Success,
 	Error,
 	ValidationException,

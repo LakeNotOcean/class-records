@@ -1,4 +1,4 @@
-import { ResultEnum } from '@common';
+import { StatusEnum } from '@common';
 import {
 	BusinessException,
 	ExceptionPayload,
@@ -6,6 +6,6 @@ import {
 
 export class NotExistException extends BusinessException {
 	constructor(payload: ExceptionPayload) {
-		super(ResultEnum.NotExistException, 'element does not exist', payload);
+		super(StatusEnum.NotExistException, 'element does not exist', payload);
 	}
 }

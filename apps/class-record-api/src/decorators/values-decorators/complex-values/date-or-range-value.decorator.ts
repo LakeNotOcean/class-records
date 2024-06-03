@@ -1,4 +1,4 @@
-import { ResultEnum, toDate } from '@common';
+import { StatusEnum, toDate } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, ValidateIf } from 'class-validator';
@@ -30,12 +30,12 @@ export function dateOrRangeValueDec(opt: dateValueDecOptions) {
 				throw new ValidationException([error]);
 			}
 			const parseSingleDateResult = toDate(value);
-			if (parseSingleDateResult.result == ResultEnum.Success) {
-				return parseSingleDateResult.resultData;
+			if (parseSingleDateResult.getStatus() == StatusEnum.Success) {
+				return parseSingleDateResult.unwrap();
 			}
 			const parseResult = getDateRangeFromString(value);
-			if (parseResult.result == ResultEnum.Success) {
-				return parseResult.resultData;
+			if (parseResult.getStatus() == StatusEnum.Success) {
+				return parseResult.unwrap();
 			}
 
 			setValidationErrorConstraint(
@@ -43,9 +43,9 @@ export function dateOrRangeValueDec(opt: dateValueDecOptions) {
 				...[
 					{
 						key: 'parseSingleDateResult',
-						message: parseSingleDateResult.errorMessage,
+						message: parseSingleDateResult.getErrorMessage(),
 					},
-					{ key: 'parseResult', message: parseResult.errorMessage },
+					{ key: 'parseResult', message: parseResult.getErrorMessage() },
 				],
 			);
 			throw new ValidationException([error]);

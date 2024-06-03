@@ -1,4 +1,4 @@
-import { ResultEnum } from '../result';
+import { StatusEnum } from '../result';
 import {
 	AuthenticationException,
 	AuthorisationException,
@@ -6,26 +6,26 @@ import {
 
 export class UserAuthenticationException extends AuthenticationException {
 	constructor() {
-		super(ResultEnum.AuthenticationFailed, 'failed to log in');
+		super(StatusEnum.AuthenticationFailed, 'failed to log in');
 	}
 }
 
 export class UserAuthorizationException extends AuthorisationException {
 	constructor() {
-		super(ResultEnum.AuthorizationFailed, 'failed to authorization');
+		super(StatusEnum.AuthorizationFailed, 'failed to authorization');
 	}
 }
 
 export class AccessTokenException extends AuthenticationException {
 	constructor() {
-		super(ResultEnum.AuthenticationFailed, 'access token was not provided');
+		super(StatusEnum.AuthenticationFailed, 'access token was not provided');
 	}
 }
 
 export class RefreshTokenException extends AuthenticationException {
 	constructor() {
 		super(
-			ResultEnum.AuthenticationFailed,
+			StatusEnum.AuthenticationFailed,
 			'refresh token was not provided or expired',
 		);
 	}
@@ -34,7 +34,7 @@ export class RefreshTokenException extends AuthenticationException {
 export class CSRFTokenException extends AuthenticationException {
 	constructor() {
 		super(
-			ResultEnum.AuthorizationFailed,
+			StatusEnum.AuthorizationFailed,
 			'csrf tokens do not match or not provided',
 		);
 	}

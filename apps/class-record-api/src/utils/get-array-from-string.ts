@@ -2,7 +2,7 @@ import {
 	createErrorResult,
 	createSuccessResult,
 	Result,
-	ResultEnum,
+	StatusEnum,
 } from '@common';
 
 export function getArrayFromString<T>(
@@ -24,10 +24,10 @@ export function getArrayFromString<T>(
 	const numberArr: T[] = [];
 	for (const s of splitResult) {
 		const parseNumb = parseFunction(s);
-		if (parseNumb.result == ResultEnum.Error) {
+		if (parseNumb.getStatus() == StatusEnum.Error) {
 			return createErrorResult('some value is invalid');
 		}
-		numberArr.push(parseNumb.resultData);
+		numberArr.push(parseNumb.unwrap());
 	}
 	return createSuccessResult(numberArr);
 }

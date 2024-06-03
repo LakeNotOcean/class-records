@@ -1,4 +1,4 @@
-import { ResultEnum, toInteger } from '@common';
+import { StatusEnum, toInteger } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, ValidateIf } from 'class-validator';
@@ -29,13 +29,13 @@ export function intSeparatedByCommasValueDec(opt: intValueDecOptions) {
 			}
 
 			const parseResult = getArrayFromString(value, 20, INT_REGEX, toInteger);
-			if (parseResult.result == ResultEnum.Success) {
-				return parseResult.resultData;
+			if (parseResult.getStatus() == StatusEnum.Success) {
+				return parseResult.unwrap();
 			}
 
 			setValidationErrorConstraint(error, {
 				key: 'parseResult',
-				message: parseResult.errorMessage,
+				message: parseResult.getErrorMessage(),
 			});
 			throw new ValidationException([error]);
 		}),
