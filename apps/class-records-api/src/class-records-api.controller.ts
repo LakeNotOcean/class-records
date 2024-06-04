@@ -1,4 +1,4 @@
-import { Body, Controller, Query } from '@nestjs/common';
+import { Controller, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { EntityManager } from 'typeorm';
 import { BaseApiController } from './controllers/base-api.ontroller';
@@ -7,7 +7,7 @@ import { PostRequestDec } from './decorators/methods-decorators/post-request.dec
 import { TransactionManager } from './decorators/transaction.decorator';
 import { AddLessonsDto } from './dto/add-lessons.dto';
 import { LessonDto } from './dto/lessons.dto';
-import { AddLessonsValidationPipe } from './pipes/add-lessons.pipe';
+import { ValidAddLessonsBody } from './pipes/add-lessons.pipe';
 import { LessonsQuery } from './queries/lessons.query';
 import { ClassRecordsApiService } from './services/class-records-api-service/class-records-api.service';
 
@@ -41,7 +41,7 @@ export class ClassRecordsApiController extends BaseApiController {
 	})
 	async addLessons(
 		@TransactionManager() entityManager: EntityManager,
-		@Body(new AddLessonsValidationPipe()) body: AddLessonsDto,
+		@ValidAddLessonsBody() body: AddLessonsDto,
 	) {
 		await this.classRecordApiService.addLessons(entityManager, body);
 	}

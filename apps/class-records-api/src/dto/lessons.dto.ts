@@ -1,6 +1,6 @@
 import { LessonsEntity, toIntBoolean, toYYYYMMDD } from '@common';
 import { ApiExtraModels } from '@nestjs/swagger';
-import { arrayValueDec } from '../decorators/values-decorators/array-value.decorator';
+import { arrayOfEntitiesValueDec } from '../decorators/values-decorators/array-value.decorator';
 import { booleanIntValueDec } from '../decorators/values-decorators/boolean-int-value.decorator';
 import { dateValueDec } from '../decorators/values-decorators/date-value.decorator';
 import { intValueDec } from '../decorators/values-decorators/int-value.decorator';
@@ -28,10 +28,10 @@ export class LessonDto {
 	@intValueDec({ isRequired: true })
 	visitCount: number;
 
-	@arrayValueDec({ isRequired: true, targetEntity: StudentDto })
+	@arrayOfEntitiesValueDec({ isRequired: true, targetEntity: StudentDto })
 	students: StudentDto[];
 
-	@arrayValueDec({ isRequired: true, targetEntity: TeacherDto })
+	@arrayOfEntitiesValueDec({ isRequired: true, targetEntity: TeacherDto })
 	teachers: TeacherDto[];
 }
 

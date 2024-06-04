@@ -7,6 +7,7 @@ import {
 	ValidationException,
 } from 'libs/common/src/exceptions';
 import { KEY_ADD_LESSONS_VALIDATION_PIPE } from '../constants/error-constraints.constant';
+import { RawBodyDec } from '../decorators/raw-body.decorator';
 import { AddLessonsDto } from '../dto/add-lessons.dto';
 
 @Injectable()
@@ -18,8 +19,8 @@ export class AddLessonsValidationPipe implements PipeTransform<AddLessonsDto> {
 			throw erorrs;
 		}
 
-		const lessonsCount = +Object.hasOwn(object, 'lessonsCount');
-		const lastDate = +Object.hasOwn(object, 'lastDate');
+		const lessonsCount = +(object.lessonsCount != null && object != undefined);
+		const lastDate = +(object.lastDate != null && object != undefined);
 		if (lessonsCount + lastDate != 1) {
 			const error = new ValidationError();
 			setValidationErrorConstraint(error, {
@@ -45,3 +46,6 @@ export class AddLessonsValidationPipe implements PipeTransform<AddLessonsDto> {
 		return object;
 	}
 }
+
+export const ValidAddLessonsBody = () =>
+	RawBodyDec(new AddLessonsValidationPipe());

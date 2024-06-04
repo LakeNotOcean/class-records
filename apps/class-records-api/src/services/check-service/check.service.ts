@@ -18,9 +18,9 @@ export class CheckService {
 			return;
 		}
 		const idsSet = new Set(teachersIds);
-		const notFoundArray = findResult.filter((r) => !idsSet.has(r.id));
+		findResult.forEach((r) => idsSet.delete(r.id));
 		throw new NotExistException({
-			message: `the following items were not found: ${notFoundArray.join(', ')}`,
+			message: `the following items were not found: ${teachersIds.join(', ')}`,
 		});
 	}
 }

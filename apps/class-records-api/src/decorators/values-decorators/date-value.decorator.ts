@@ -1,7 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsDateString, IsOptional } from 'class-validator';
+import { IsDate, IsOptional } from 'class-validator';
 
 export type dateValueDecOptions = {
 	isRequired?: boolean;
@@ -9,7 +9,7 @@ export type dateValueDecOptions = {
 export function dateValueDec(opt: dateValueDecOptions) {
 	return applyDecorators(
 		ApiProperty({ required: opt.isRequired, type: Date }),
-		opt.isRequired ? IsDateString() : IsOptional(),
+		opt.isRequired ? IsDate() : IsOptional(),
 		Transform(({ value }) => {
 			if (!value) {
 				return null;

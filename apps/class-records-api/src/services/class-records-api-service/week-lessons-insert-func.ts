@@ -13,7 +13,7 @@ export function firstWeekLessonsInsert(
 	const insertPromises: Promise<void>[] = [];
 
 	for (const day of weekDays) {
-		if (dayOfFirstDate < day) {
+		if (dayOfFirstDate > day) {
 			continue;
 		}
 		const currDate = addDays(firstDate, day - dayOfFirstDate);
