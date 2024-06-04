@@ -12,6 +12,10 @@ import { StudentsEntity } from './Students.entity';
 @Index('student_id_lesson_id_pkey', ['lessonId', 'studentId'], { unique: true })
 @Entity('lesson_students')
 export class LessonStudentsEntity {
+	constructor(args: Required<LessonStudentsEntity>) {
+		Object.assign(this, args);
+	}
+
 	@PrimaryColumn({ type: 'int', name: 'lesson_id' })
 	lessonId: number;
 

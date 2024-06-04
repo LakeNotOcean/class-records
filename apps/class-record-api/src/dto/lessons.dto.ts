@@ -1,3 +1,4 @@
+import { LessonsEntity, toIntBoolean, toYYYYMMDD } from '@common';
 import { ApiExtraModels } from '@nestjs/swagger';
 import { arrayValueDec } from '../decorators/values-decorators/array-value.decorator';
 import { booleanIntValueDec } from '../decorators/values-decorators/boolean-int-value.decorator';
@@ -32,4 +33,29 @@ export class LessonDto {
 
 	@arrayValueDec({ isRequired: true, targetEntity: TeacherDto })
 	teachers: TeacherDto[];
+}
+
+export function toLessonDto(lesson: LessonsEntity): LessonDto {
+	const visitCount = lesson.lessonStudents.reduce(
+		(acc, s) => (s.visit ? acc + 1 : acc),
+		0,
+	);
+	return new LessonDto({
+		id: lesson.id,
+		date: toYYYYMMDD(lesson.date).unwrap(),
+		title: lesson.title,
+		visitCount,
+		status: toIntBoolean(lesson.status).unwrap(),
+		students: lesson.lessonStudents.map(
+			(ls) =>
+				new StudentDto({
+					id: ls.studentId,
+					visit: ls.visit,
+					name: ls.studentsEntity.name,
+				}),
+		),
+		teachers: lesson.teachers.map(
+			(t) => new TeacherDto({ id: t.id, name: t.name }),
+		),
+	});
 }

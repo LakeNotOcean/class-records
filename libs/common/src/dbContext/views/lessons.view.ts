@@ -9,32 +9,34 @@ import { ViewColumn, ViewEntity } from 'typeorm';
     from lessons l 
     left join lesson_students ls on l.id =ls.lesson_id
     left join (
-        select  lesson_id, count(student_id) over (partition by lesson_id) as studentCount
-        from lesson_students ls2 
+        select ls2_1.lesson_id,
+            count(ls2_1.student_id) as studentCount
+           from lesson_students ls2_1
+           group by ls2_1.lesson_id
     ) ls2 on ls2.lesson_id = l.id  
     left join students s on s.id = ls.student_id 
     left join lesson_teachers lt ON l.id = lt.lesson_id 
     left join teachers t on t.id = lt.teacher_id`,
 })
 export class LessonsView {
-	@ViewColumn()
-	lessonsId: number;
-	@ViewColumn()
+	@ViewColumn({ name: 'lessonid' })
+	lessonId: number;
+	@ViewColumn({ name: 'lessondate' })
 	lessonDate: Date;
-	@ViewColumn()
-	lessonStatus: string;
-	@ViewColumn()
-	lessonsTitle: string;
-	@ViewColumn()
-	studentVisit: string;
-	@ViewColumn()
+	@ViewColumn({ name: 'lessonstatus' })
+	lessonStatus: boolean;
+	@ViewColumn({ name: 'lessontitle' })
+	lessonTitle: string;
+	@ViewColumn({ name: 'studentvisit' })
+	studentVisit: boolean;
+	@ViewColumn({ name: 'studentid' })
 	studentId: number;
-	@ViewColumn()
+	@ViewColumn({ name: 'studentname' })
 	studentName: string;
-	@ViewColumn()
+	@ViewColumn({ name: 'teacherid' })
 	teacherId: number;
-	@ViewColumn()
+	@ViewColumn({ name: 'teachername' })
 	teacherName: string;
-	@ViewColumn()
+	@ViewColumn({ name: 'studentcount' })
 	studentCount: number;
 }

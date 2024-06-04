@@ -1,111 +1,72 @@
-import {
-	LessonsEntity,
-	LessonStudentsEntity,
-	StudentsEntity,
-	TeachersEntity,
-	toYYYYMMDD,
-} from '@common';
+import { toYYYYMMDD } from '@common';
+import { LessonsView } from 'libs/common/src/dbContext/views/lessons.view';
 import { EntityManager } from 'typeorm';
-import { STUDENT_COUNT } from '../../constants/db.constant';
-import { selectIdsForRange } from '../../db-queries/select-min-max-id';
 import { DateRangeDto } from '../../dto/data-range.dto';
 import { RangeDto } from '../../dto/range.dto';
+import { lessonsViewToLessonsEntity } from '../../entities-utils/lessons-view-to-lessons-entity';
+import { getIntIdRangeForQuery } from '../../entities-utils/select-min-max-id';
 import { LessonsQuery } from '../../queries/lessons.query';
 
 export async function getLessonsFromDb(
 	entityManager: EntityManager,
-	lessonsQuery: LessonsQuery,
+	queryParams: LessonsQuery,
 ) {
-	let build = entityManager
-		.createQueryBuilder()
-		//.select(['l.id', 'l.date', 'l.status', 'l.title'])
-		.from(LessonsEntity, 'l');
+	const build = entityManager
+		.getRepository(LessonsView)
+		.createQueryBuilder('l');
 
-	if (lessonsQuery.date) {
-		if (lessonsQuery.date instanceof DateRangeDto) {
-			build = build.andWhere('l.date >= :startDate and l.date<= :endDate', {
-				startDate: toYYYYMMDD(lessonsQuery.date.start).unwrap(),
-				endDate: toYYYYMMDD(lessonsQuery.date.end).unwrap(),
+	if (queryParams.date) {
+		if (queryParams.date instanceof DateRangeDto) {
+			build.andWhere('l.lessonDate >= :startDate and l.lessonDate<= :endDate', {
+				startDate: toYYYYMMDD(queryParams.date.start).unwrap(),
+				endDate: toYYYYMMDD(queryParams.date.end).unwrap(),
 			});
 		} else {
-			build = build.andWhere('l.date = :date', {
-				date: toYYYYMMDD(lessonsQuery.date).unwrap(),
+			build.andWhere('l.lessonDate = :date', {
+				date: toYYYYMMDD(queryParams.date).unwrap(),
 			});
 		}
 	}
 
-	if (lessonsQuery.status) {
-		build = build.andWhere('l.status = :status', {
-			status: lessonsQuery.status,
+	if (queryParams.status) {
+		build.andWhere('l.lessonStatus = :status', {
+			status: queryParams.status,
 		});
 	}
 
-	build = build.leftJoin('lesson_teachers', 'lt', 'l.id = lt.lesson_id');
-	build = build.leftJoinAndMapMany(
-		'l.teachers',
-		TeachersEntity,
-		't',
-		'lt.teacher_id = t.id',
-	);
-
-	if (lessonsQuery.teachersIds) {
-		build = build.andWhere('t.id IN (:...teachersIds)', {
-			teachersIds: lessonsQuery.teachersIds,
+	if (queryParams.teachersIds) {
+		build.andWhere('l.teacherId IN (:...teachersIds)', {
+			teachersIds: queryParams.teachersIds,
 		});
 	}
 
-	build = build.leftJoinAndMapMany(
-		'l.lessonStudents',
-		LessonStudentsEntity,
-		'ls',
-		'l.id = ls.lessonId',
-	);
-	build = build.leftJoinAndMapOne(
-		'ls.studentsEntity',
-		StudentsEntity,
-		's',
-		'ls.studentId = s.id',
-	);
-	build = build.leftJoinAndSelect(
-		(qb) => {
-			return qb
-				.select(['ls2.lessonId as lessonId'])
-				.addSelect('COUNT(ls2.studentId)::int', STUDENT_COUNT)
-				.from(LessonStudentsEntity, 'ls2')
-				.groupBy('ls2.lessonId');
-		},
-		'ls2',
-		'ls2.lessonId = ls.lessonId',
-	);
-
-	if (lessonsQuery.studentsCount) {
-		if (lessonsQuery.studentsCount instanceof RangeDto) {
-			build = build.andWhere(
-				'ls2.' + STUDENT_COUNT + ' between :startCount and :endCount',
-				{
-					startCount: lessonsQuery.studentsCount.start,
-					endCount: lessonsQuery.studentsCount.end,
-				},
-			);
+	if (queryParams.studentsCount) {
+		if (queryParams.studentsCount instanceof RangeDto) {
+			build.andWhere('l.studentCount between :startCount and :endCount', {
+				startCount: queryParams.studentsCount.start,
+				endCount: queryParams.studentsCount.end,
+			});
 		} else {
-			build = build.andWhere('ls2.' + STUDENT_COUNT + ' = :studentCount', {
-				studentCount: lessonsQuery.studentsCount,
+			build.andWhere('l.studentCount = :studentCount', {
+				studentCount: queryParams.studentsCount,
 			});
 		}
 	}
 
-	const [startId, endId] = await selectIdsForRange(
-		build,
-		'l.id',
-		lessonsQuery.lessonsPerPage,
-		lessonsQuery.lessonsPerPage * (lessonsQuery.page - 1),
+	const offset = queryParams.lessonsPerPage * (queryParams.page - 1);
+	const range = await getIntIdRangeForQuery(
+		build.clone(),
+		'l.lessonId',
+		offset + 1,
+		offset + queryParams.lessonsPerPage,
 	);
-	build = build.addSelect(['l.id', 'l.date', 'l.status', 'l.title']);
-	build = build.andWhere('l.id between :startId and :endId', {
-		startId,
-		endId,
+	build.andWhere('l.lessonId >= :startId and l.lessonId <= :endId', {
+		startId: range.start,
+		endId: range.end,
 	});
+	build.select();
+
 	const dbResult = await build.getMany();
 
-	return dbResult;
+	return lessonsViewToLessonsEntity(dbResult);
 }

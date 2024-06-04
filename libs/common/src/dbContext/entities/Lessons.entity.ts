@@ -16,6 +16,9 @@ import { TeachersEntity } from './Teachers.entity';
 export class LessonsEntity {
 	@PrimaryGeneratedColumn({ type: 'int', name: 'id' })
 	id: number;
+	constructor(args: Required<LessonsEntity>) {
+		Object.assign(this, args);
+	}
 
 	@Column('timestamp without time zone', {
 		name: 'date',

@@ -4,6 +4,7 @@ export * from './constants/constants';
 export * from './dbContext';
 export * from './enums';
 export * from './loggers';
+export * from './map-utils';
 export * from './parse-utils';
 export * from './random-utils';
 export * from './result';
