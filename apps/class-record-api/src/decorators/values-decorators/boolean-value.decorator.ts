@@ -11,6 +11,8 @@ export function booleanDec(opt: booleanDecOptions) {
 		ApiProperty({ required: opt.isRequired, type: Boolean }),
 		opt.isRequired ? IsNotEmpty() : IsOptional(),
 		IsBoolean(),
-		Transform(({ value }) => value === 'true'),
+		Transform(({ value }) =>
+			typeof value === 'boolean' ? value : value === 'true',
+		),
 	);
 }
