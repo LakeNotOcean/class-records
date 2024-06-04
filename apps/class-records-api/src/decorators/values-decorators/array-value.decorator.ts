@@ -13,8 +13,10 @@ import {
 /* eslint-disable @typescript-eslint/ban-types */
 export type arrayValueDecOptions = {
 	targetEntity: NonNullable<Function>;
+	type?: string;
 	isRequired: boolean;
-	maxSize?:number;
+	maxSize?: number;
+	examples?: unknown[];
 };
 
 export function arrayValueDec(opt: arrayValueDecOptions) {
@@ -22,7 +24,10 @@ export function arrayValueDec(opt: arrayValueDecOptions) {
 		ApiProperty({
 			type: 'array',
 			required: opt.isRequired,
-			items: { $ref: getSchemaPath(opt.targetEntity) },
+			examples: opt.examples,
+			items: opt.targetEntity
+				? { $ref: getSchemaPath(opt.targetEntity) }
+				: { type: opt.type ? opt.type : 'string' },
 		}),
 		opt.isRequired ? IsNotEmpty() : IsOptional(),
 	];

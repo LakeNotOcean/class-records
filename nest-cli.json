@@ -2,12 +2,12 @@
 	"$schema": "https://json.schemastore.org/nest-cli",
 	"collection": "@nestjs/schematics",
 	"monorepo": true,
-	"root": "apps/class-record-api",
-	"sourceRoot": "apps/class-record-api/src",
+	"root": "apps/class-records-api",
+	"sourceRoot": "apps/class-records-api/src",
 	"compilerOptions": {
 		"webpack": true,
 		"typeCheck": true,
-		"tsConfigPath": "apps/class-record-api/tsconfig.app.json"
+		"tsConfigPath": "apps/class-records-api/tsconfig.app.json"
 	},
 	"projects": {
 		"data-generator": {
@@ -19,13 +19,13 @@
 				"tsConfigPath": "apps/data-generator/tsconfig.app.json"
 			}
 		},
-		"class-record-api": {
+		"class-records-api": {
 			"type": "application",
-			"root": "apps/class-record-api",
+			"root": "apps/class-records-api",
 			"entryFile": "main",
-			"sourceRoot": "apps/class-record-api/src",
+			"sourceRoot": "apps/class-records-api/src",
 			"compilerOptions": {
-				"tsConfigPath": "apps/class-record-api/tsconfig.app.json"
+				"tsConfigPath": "apps/class-records-api/tsconfig.app.json"
 			}
 		},
 		"common": {

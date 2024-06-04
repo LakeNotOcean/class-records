@@ -9,12 +9,12 @@ import { AddLessonsDto } from './dto/add-lessons.dto';
 import { LessonDto } from './dto/lessons.dto';
 import { AddLessonsValidationPipe } from './pipes/add-lessons.pipe';
 import { LessonsQuery } from './queries/lessons.query';
-import { ClassRecordApiService } from './services/class-record-api-service/class-record-api.service';
+import { ClassRecordsApiService } from './services/class-records-api-service/class-records-api.service';
 
 @Controller()
 @ApiTags('lessons')
-export class ClassRecordApiController extends BaseApiController {
-	constructor(private readonly classRecordApiService: ClassRecordApiService) {
+export class ClassRecordsApiController extends BaseApiController {
+	constructor(private readonly classRecordApiService: ClassRecordsApiService) {
 		super();
 	}
 

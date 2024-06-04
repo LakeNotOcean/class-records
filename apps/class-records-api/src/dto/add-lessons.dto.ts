@@ -5,7 +5,13 @@ import { stringValueDec } from '../decorators/values-decorators/string-value.dec
 import { weekDaysArrayValueDec } from '../decorators/values-decorators/week-days-array-value.decorator';
 
 export class AddLessonsDto {
-	@arrayValueDec({ isRequired: true, targetEntity: Number, maxSize: 100 })
+	@arrayValueDec({
+		isRequired: true,
+		type: 'number',
+		targetEntity: Number,
+		maxSize: 100,
+		examples: [1, 2, 3],
+	})
 	teachersIds: number[];
 
 	@stringValueDec({ isRequired: true, maxLength: 100 })

@@ -11,11 +11,11 @@
 		"data-generator:cleansing": "cross-env NODE_ENV=dev node dist/apps/data-generator/main.js data-cleansing -t teachers",
 		"data-generator:debug": "cross-env NODE_ENV=dev nest start data-generator data-cleansing --debug --watch -- -t teachers",
 		"API SCRIPTS": "",
-		"class-record-api:build": "nest build class-record-api",
-		"class-record-api": "cross-env NODE_ENV=dev nest start class-record-api",
-		"class-record-api:debug": "cross-env NODE_ENV=dev nest start class-record-api --debug --watch"
+		"class-records-api:build": "nest build class-records-api",
+		"class-records-api": "cross-env NODE_ENV=dev nest start class-records-api",
+		"class-records-api:debug": "cross-env NODE_ENV=dev nest start class-records-api --debug --watch"
 	},
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Class records monorepo project",
 	"keywords": [
 		"typeorm",

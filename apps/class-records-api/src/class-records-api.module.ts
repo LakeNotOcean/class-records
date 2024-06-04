@@ -3,10 +3,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { generalConfig, getPinoLoggerConfig } from 'libs/common/src';
 import { ExceptionsModule } from 'libs/common/src/exceptions';
 import { LoggerModule } from 'nestjs-pino';
-import { ClassRecordApiController } from './class-record-api.controller';
+import { ClassRecordsApiController } from './class-records-api.controller';
 import { dbModule } from './modules/database.module';
 import { CheckService } from './services/check-service/check.service';
-import { ClassRecordApiService } from './services/class-record-api-service/class-record-api.service';
+import { ClassRecordsApiService } from './services/class-records-api-service/class-records-api.service';
 
 @Module({
 	imports: [
@@ -24,7 +24,7 @@ import { ClassRecordApiService } from './services/class-record-api-service/class
 		}),
 		dbModule,
 	],
-	controllers: [ClassRecordApiController],
-	providers: [ClassRecordApiService, CheckService],
+	controllers: [ClassRecordsApiController],
+	providers: [ClassRecordsApiService, CheckService],
 })
-export class ClassRecordApiModule {}
+export class ClassRecordsApiModule {}

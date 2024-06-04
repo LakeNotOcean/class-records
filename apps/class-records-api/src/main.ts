@@ -5,11 +5,11 @@ import { toEnvEnum } from 'libs/common/src';
 import { configSwagger } from 'libs/common/src/configs/configSwagger';
 import { ValidationException } from 'libs/common/src/exceptions';
 import { Logger } from 'nestjs-pino';
-import { ClassRecordApiModule } from './class-record-api.module';
+import { ClassRecordsApiModule } from './class-records-api.module';
 import { BaseInterceptor } from './inteceptors/base.inteceptor';
 
 async function bootstrap() {
-	const app = await NestFactory.create(ClassRecordApiModule);
+	const app = await NestFactory.create(ClassRecordsApiModule);
 
 	const configService = app.get(ConfigService);
 

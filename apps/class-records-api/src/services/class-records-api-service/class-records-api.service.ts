@@ -9,7 +9,7 @@ import { addLessonsToDb } from './add-lessons';
 import { getLessonsFromDb } from './get-lessons';
 
 @Injectable()
-export class ClassRecordApiService {
+export class ClassRecordsApiService {
 	constructor(private readonly checkService: CheckService) {}
 
 	async getLessons(entityManager: EntityManager, lessonsQuery: LessonsQuery) {
