@@ -17,12 +17,15 @@ export async function getLessonsFromDb(
 
 	if (queryParams.date) {
 		if (queryParams.date instanceof DateRangeDto) {
-			build.andWhere('l.lessonDate >= :startDate and l.lessonDate<= :endDate', {
-				startDate: toYYYYMMDD(queryParams.date.start).unwrap(),
-				endDate: toYYYYMMDD(queryParams.date.end).unwrap(),
-			});
+			build.andWhere(
+				"to_char(l.lessonDate, 'YYYY-MM-DD') >= :startDate and to_char(l.lessonDate, 'YYYY-MM-DD') <= :endDate",
+				{
+					startDate: toYYYYMMDD(queryParams.date.start).unwrap(),
+					endDate: toYYYYMMDD(queryParams.date.end).unwrap(),
+				},
+			);
 		} else {
-			build.andWhere('l.lessonDate = :date', {
+			build.andWhere("to_char(l.lessonDate, 'YYYY-MM-DD') = :date", {
 				date: toYYYYMMDD(queryParams.date).unwrap(),
 			});
 		}

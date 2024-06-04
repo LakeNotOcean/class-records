@@ -12,12 +12,12 @@ export async function getIntIdRangeForQuery<T>(
 		.addSelect(IdField, 'id')
 		.orderBy(IdField)
 		.getRawMany();
-	const start =
-		parseInt(queryResult.find((r) => parseInt(r.denserank) >= minRank).id) || 0;
-	const end =
-		parseInt(
-			queryResult.findLast((r) => parseInt(r.denserank) <= maxRank).id,
-		) || 0;
+	const start = parseInt(
+		queryResult.find((r) => parseInt(r.denserank) >= minRank)?.id || 0,
+	);
+	const end = parseInt(
+		queryResult.findLast((r) => parseInt(r.denserank) <= maxRank)?.id || 0,
+	);
 
 	return new RangeDto({ start, end });
 }
