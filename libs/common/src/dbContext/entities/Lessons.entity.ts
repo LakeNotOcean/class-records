@@ -12,7 +12,7 @@ import { TeachersEntity } from './Teachers.entity';
 
 @Index('lessons_id_idx', ['id'], {})
 @Index('lesson_pkey', ['id'], { unique: true })
-@Entity('lessons', { schema: 'class' })
+@Entity('lessons')
 export class LessonsEntity {
 	@PrimaryGeneratedColumn({ type: 'int', name: 'id' })
 	id: number;

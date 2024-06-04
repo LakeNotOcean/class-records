@@ -12,6 +12,7 @@ import {
 	StudentsEntity,
 	TeachersEntity,
 } from './entities';
+import { LessonsView } from './views/lessons.view';
 
 export function getDatabaseConfig(
 	configService: ConfigService,
@@ -36,6 +37,7 @@ export function getDatabaseConfig(
 		maxQueryExecutionTime: 1000,
 		migrations: [join(__dirname, 'migrations', '*{.js,.ts}')],
 		entities: [
+			LessonsView,
 			LessonsEntity,
 			LessonStudentsEntity,
 			StudentsEntity,

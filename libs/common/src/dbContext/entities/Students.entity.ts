@@ -8,7 +8,7 @@ import {
 import { LessonStudentsEntity } from './LessonStudents.entity';
 
 @Index('student_pkey', ['id'], { unique: true })
-@Entity('students', { schema: 'class' })
+@Entity('students')
 export class StudentsEntity {
 	@PrimaryGeneratedColumn({ type: 'int', name: 'id' })
 	id: number;

@@ -10,7 +10,7 @@ import { LessonsEntity } from './Lessons.entity';
 import { StudentsEntity } from './Students.entity';
 
 @Index('student_id_lesson_id_pkey', ['lessonId', 'studentId'], { unique: true })
-@Entity('lesson_students', { schema: 'class' })
+@Entity('lesson_students')
 export class LessonStudentsEntity {
 	@PrimaryColumn({ type: 'int', name: 'lesson_id' })
 	lessonId: number;

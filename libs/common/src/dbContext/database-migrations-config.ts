@@ -17,7 +17,10 @@ function getDatabaseConfig(configService: ConfigService): DataSourceOptions {
 		logger: 'simple-console',
 		maxQueryExecutionTime: 1000,
 		migrations: [join(__dirname, 'migrations', '*{.js,.ts}')],
-		entities: [join(__dirname, 'entities', '*{.js,.ts}')],
+		entities: [
+			join(__dirname, 'entities', '*{.js,.ts}'),
+			join(__dirname, 'views', '*{.js,.ts}'),
+		],
 	};
 }
 

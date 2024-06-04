@@ -16,17 +16,9 @@ export async function getLessonsFromDb(
 	entityManager: EntityManager,
 	lessonsQuery: LessonsQuery,
 ) {
-	const [startId, endId] = await selectIdsForRange(
-		entityManager,
-		LessonsEntity,
-		'id',
-		lessonsQuery.lessonsPerPage,
-		lessonsQuery.lessonsPerPage * (lessonsQuery.page - 1),
-	);
-
 	let build = entityManager
 		.createQueryBuilder()
-		.select(['l.id', 'l.date', 'l.status', 'l.title'])
+		//.select(['l.id', 'l.date', 'l.status', 'l.title'])
 		.from(LessonsEntity, 'l');
 
 	if (lessonsQuery.date) {
@@ -101,11 +93,18 @@ export async function getLessonsFromDb(
 			});
 		}
 	}
+
+	const [startId, endId] = await selectIdsForRange(
+		build,
+		'l.id',
+		lessonsQuery.lessonsPerPage,
+		lessonsQuery.lessonsPerPage * (lessonsQuery.page - 1),
+	);
+	build = build.addSelect(['l.id', 'l.date', 'l.status', 'l.title']);
 	build = build.andWhere('l.id between :startId and :endId', {
 		startId,
 		endId,
 	});
-
 	const dbResult = await build.getMany();
 
 	return dbResult;
