@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { EntityManager, In } from 'typeorm';
 import { NotExistException } from '../../exceptions/not-exists.exception';
 
+// Сервис для проверки наличия данных в БД перед выполнением запроса
 @Injectable()
 export class CheckService {
 	private readonly logger = new JsonLogger(CheckService.name);

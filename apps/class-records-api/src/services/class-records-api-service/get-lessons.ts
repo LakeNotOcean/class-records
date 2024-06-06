@@ -7,10 +7,13 @@ import { lessonsViewToLessonsEntity } from '../../entities-utils/lessons-view-to
 import { getIntIdRangeForQuery } from '../../entities-utils/select-min-max-id';
 import { LessonsQuery } from '../../queries/lessons.query';
 
+// основной метод запроса к БД на получения списка занятий
 export async function getLessonsFromDb(
 	entityManager: EntityManager,
 	queryParams: LessonsQuery,
 ) {
+	// Добалвение различных фильтров к sql-запросу с помощью Query Builder
+	// Для данного запроса используется специальная вьюшка, так как запрос получается достаточно большим
 	const build = entityManager
 		.getRepository(LessonsView)
 		.createQueryBuilder('l');
@@ -57,6 +60,8 @@ export async function getLessonsFromDb(
 	}
 
 	const offset = queryParams.lessonsPerPage * (queryParams.page - 1);
+	// Специальный запрос на получение диапазона выбранных id
+	// Лучшим вариантом было бы сохранять id последней отправленной записи, но в таком случае необходимо изменение API
 	const range = await getIntIdRangeForQuery(
 		build.clone(),
 		'l.lessonId',

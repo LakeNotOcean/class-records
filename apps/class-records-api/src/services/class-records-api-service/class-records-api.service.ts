@@ -8,6 +8,7 @@ import { CheckService } from '../check-service/check.service';
 import { addLessonsToDb } from './add-lessons';
 import { getLessonsFromDb } from './get-lessons';
 
+// Основной сервис. Основная задача - начать или завершить транзакцию метода, преобразовать в dto
 @Injectable()
 export class ClassRecordsApiService {
 	constructor(private readonly checkService: CheckService) {}

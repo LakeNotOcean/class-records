@@ -7,14 +7,17 @@ import {
 	nextWeekLessonsInsert,
 } from './week-lessons-insert-func';
 
+// функция для добавления списка занятий
 export async function addLessonsToDb(
 	entityManager: EntityManager,
 	checkService: CheckService,
 	dto: AddLessonsDto,
 ): Promise<void> {
+	// предварительная проверка для наличие учителей с указанными id
 	await checkService.checkIfTeachersExists(entityManager, dto.teachersIds);
 	const insertPromises: Promise<void>[] = [];
 
+	// в зависимости от поля, по которому завершается генерация занятий, выбирается соответствуюшая функция для проверки условий
 	let continuantionConditionFunc: (
 		currDate: Date,
 		changeCount: boolean,
@@ -39,9 +42,12 @@ export async function addLessonsToDb(
 		};
 	}
 
+	// добавление данных для первой недели
+	// алгоритм немного отличается, поэтому вынесен в отдельную функцию
 	insertPromises.push(
 		...firstWeekLessonsInsert(entityManager, dto, continuantionConditionFunc),
 	);
+	// добавление данных для последующих недель
 	insertPromises.push(
 		...nextWeekLessonsInsert(entityManager, dto, continuantionConditionFunc),
 	);

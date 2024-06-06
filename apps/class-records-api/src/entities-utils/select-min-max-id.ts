@@ -1,6 +1,7 @@
 import { SelectQueryBuilder } from 'typeorm';
 import { RangeDto } from '../dto/range.dto';
 
+// получения диапазона уникальных id с помощью функци dense_rank
 export async function getIntIdRangeForQuery<T>(
 	build: SelectQueryBuilder<T>,
 	IdField: string,

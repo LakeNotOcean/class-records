@@ -7,6 +7,7 @@ import {
 } from '@common';
 import { LessonsView } from 'libs/common/src/dbContext/views/lessons.view';
 
+// Mapping из view в объекты entity-классов
 export function lessonsViewToLessonsEntity(
 	lessonsViews: LessonsView[],
 ): LessonsEntity[] {

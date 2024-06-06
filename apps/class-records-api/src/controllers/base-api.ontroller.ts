@@ -2,6 +2,8 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { JsonLogger } from 'libs/common/src';
 
+// абстрактный контроллер для формирования ответов
+// на данный момент его возможности не используются
 export abstract class BaseApiController {
 	private readonly logger = new JsonLogger(BaseApiController.name);
 	protected OkEmpty(response: Response): void {

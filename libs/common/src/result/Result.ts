@@ -5,6 +5,8 @@ export type ResultArgs<T> = {
 	errorMessage?: string;
 	resultData?: T;
 };
+
+// Класс для формирования результата операции, с ошибкой или без
 export class Result<T> {
 	private readonly status: StatusEnum;
 	private readonly errorMessage?: string;
