@@ -15,9 +15,13 @@
 		"class-records-api": "cross-env NODE_ENV=dev nest start class-records-api",
 		"class-records-api:debug": "cross-env NODE_ENV=dev nest start class-records-api --debug --watch"
 	},
-	"version": "0.2.0",
+	"version": "1.0.0",
 	"description": "Class records monorepo project",
 	"keywords": [
+		"nestjs",
+		"node.js",
+		"typescript",
+		"nest-commander",
 		"typeorm",
 		"migration"
 	],
@@ -41,13 +45,13 @@
 		"pino-pretty": "^11.1.0",
 		"ts-node": "^10.9.2",
 		"tsconfig-paths": "^4.2.0",
-		"typeorm": "^0.3.20"
+		"typeorm": "^0.3.20",
+		"ts-loader": "^9.5.1"
 	},
 	"devDependencies": {
 		"@types/express": "^4.17.21",
 		"@types/pg": "^8.11.6",
 		"@typescript-eslint/eslint-plugin": "^7.11.0",
-		"eslint": "^8.56.0",
-		"ts-loader": "^9.5.1"
+		"eslint": "^8.56.0"
 	}
 }
