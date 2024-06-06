@@ -11,6 +11,7 @@ import { ValidAddLessonsBody } from './pipes/add-lessons.pipe';
 import { LessonsQuery } from './queries/lessons.query';
 import { ClassRecordsApiService } from './services/class-records-api-service/class-records-api.service';
 
+// Основной контроллер для обработки запросов
 @Controller()
 @ApiTags('lessons')
 export class ClassRecordsApiController extends BaseApiController {
