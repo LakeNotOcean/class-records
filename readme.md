@@ -36,7 +36,7 @@
 - `npm run data-generator:cleansing --` - очистка выбранной таблицы. Таблица lessons очищается при любом изменении. Аргументы скрипта:
   -t --table (students|teachers|lessons) - таблица для очистки
 
-Альтернативно можно скачать готовый seed по [ссылке](https://disk.yandex.ru/d/0J5hmhXTromaRw).
+Альтернативно можно скачать готовый seed по [ссылке](https://disk.yandex.ru/d/vkkZojFcfJxnCw).
 
 ## Веб-api
 

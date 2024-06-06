@@ -15,7 +15,7 @@
 		"class-records-api": "cross-env NODE_ENV=dev nest start class-records-api",
 		"class-records-api:debug": "cross-env NODE_ENV=dev nest start class-records-api --debug --watch"
 	},
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Class records monorepo project",
 	"keywords": [
 		"nestjs",
