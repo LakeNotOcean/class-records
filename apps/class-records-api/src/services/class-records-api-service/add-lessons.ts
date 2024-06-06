@@ -15,17 +15,27 @@ export async function addLessonsToDb(
 	await checkService.checkIfTeachersExists(entityManager, dto.teachersIds);
 	const insertPromises: Promise<void>[] = [];
 
-	let continuantionConditionFunc: (currDate: Date) => boolean;
+	let continuantionConditionFunc: (
+		currDate: Date,
+		changeCount: boolean,
+	) => boolean;
 	let lessonsCount = dto.lessonsCount;
+
 	if (dto.lastDate) {
 		const lastDateYYYYMMDD = toYYYYMMDD(dto.lastDate).unwrap();
 		continuantionConditionFunc = (currDate: Date) => {
 			return toYYYYMMDD(currDate).unwrap() <= lastDateYYYYMMDD;
 		};
 	} else {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		continuantionConditionFunc = (currDate: Date) => {
-			return Boolean(lessonsCount--);
+		continuantionConditionFunc = (
+			_currDate: Date,
+			changeCount: boolean,
+		): boolean => {
+			if (changeCount) {
+				--lessonsCount;
+				return lessonsCount + 1 > 0;
+			}
+			return lessonsCount > 0;
 		};
 	}
 

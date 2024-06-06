@@ -5,7 +5,7 @@ import { AddLessonsDto } from '../../dto/add-lessons.dto';
 export function firstWeekLessonsInsert(
 	entityManager: EntityManager,
 	dto: AddLessonsDto,
-	continuantionConditionFunc: (currDate: Date) => boolean,
+	continuantionConditionFunc: (currDate: Date, changeCount: boolean) => boolean,
 ): Promise<void>[] {
 	const firstDate = dto.firstDate;
 	const dayOfFirstDate = firstDate.getDay();
@@ -17,7 +17,7 @@ export function firstWeekLessonsInsert(
 			continue;
 		}
 		const currDate = addDays(firstDate, day - dayOfFirstDate);
-		if (continuantionConditionFunc(currDate)) {
+		if (continuantionConditionFunc(currDate, true)) {
 			insertPromises.push(addLessonDbQuery(entityManager, dto, currDate));
 		}
 	}
@@ -27,7 +27,7 @@ export function firstWeekLessonsInsert(
 export function nextWeekLessonsInsert(
 	entityManager: EntityManager,
 	dto: AddLessonsDto,
-	continuantionConditionFunc: (currDate: Date) => boolean,
+	continuantionConditionFunc: (currDate: Date, changeCount: boolean) => boolean,
 ): Promise<void>[] {
 	const firstDate = dto.firstDate;
 	const weekDays = dto.days;
@@ -35,10 +35,10 @@ export function nextWeekLessonsInsert(
 
 	let currDate = addDays(firstDate, 7 - firstDate.getDay());
 
-	while (continuantionConditionFunc(currDate)) {
+	while (continuantionConditionFunc(currDate, false)) {
 		for (const day of weekDays) {
-			currDate = addDays(currDate, currDate.getDay() - day);
-			if (!continuantionConditionFunc(currDate)) {
+			currDate = addDays(currDate, day - currDate.getDay());
+			if (!continuantionConditionFunc(currDate, true)) {
 				break;
 			}
 			insertPromises.push(addLessonDbQuery(entityManager, dto, currDate));
@@ -61,7 +61,7 @@ async function addLessonDbQuery(
 		return { lesson_id: insertLessonResult.raw[0].id, teacher_id: id };
 	});
 	await entityManger
-		.createQueryBuilder('lessons_teachers', 'lt')
+		.createQueryBuilder('lesson_teachers', 'lt')
 		.insert()
 		.values(lessonTeachersValues)
 		.execute();

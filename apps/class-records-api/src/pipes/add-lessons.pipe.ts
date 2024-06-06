@@ -13,14 +13,16 @@ import { AddLessonsDto } from '../dto/add-lessons.dto';
 @Injectable()
 export class AddLessonsValidationPipe implements PipeTransform<AddLessonsDto> {
 	async transform(value: unknown, { metatype }: ArgumentMetadata) {
-		const object = plainToInstance<AddLessonsDto, unknown>(metatype, value);
+		const object = plainToInstance<AddLessonsDto, unknown>(metatype, value)[0];
 		const erorrs = await validate(object);
 		if (erorrs.length > 0) {
 			throw erorrs;
 		}
 
-		const lessonsCount = +(object.lessonsCount != null && object != undefined);
-		const lastDate = +(object.lastDate != null && object != undefined);
+		const lessonsCount = +(
+			object.lessonsCount != null && object.lessonsCount != undefined
+		);
+		const lastDate = +(object.lastDate != null && object.lastDate != undefined);
 		if (lessonsCount + lastDate != 1) {
 			const error = new ValidationError();
 			setValidationErrorConstraint(error, {

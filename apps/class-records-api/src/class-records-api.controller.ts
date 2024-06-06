@@ -1,5 +1,5 @@
 import { Controller, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { EntityManager } from 'typeorm';
 import { BaseApiController } from './controllers/base-api.ontroller';
 import { GetRequestDec } from './decorators/methods-decorators/get-request.decorator';
@@ -39,9 +39,12 @@ export class ClassRecordsApiController extends BaseApiController {
 		route: 'lessons',
 		isTransaction: true,
 	})
+	@ApiBody({ type: AddLessonsDto })
 	async addLessons(
 		@TransactionManager() entityManager: EntityManager,
-		@ValidAddLessonsBody() body: AddLessonsDto,
+
+		@ValidAddLessonsBody()
+		body: AddLessonsDto,
 	) {
 		await this.classRecordApiService.addLessons(entityManager, body);
 	}
