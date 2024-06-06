@@ -8,7 +8,6 @@ export class Migration1717496157318 implements MigrationInterface {
 			`DELETE FROM "class"."typeorm_metadata" WHERE "type" = $1 AND "name" = $2 AND "schema" = $3`,
 			['VIEW', 'lessons_view', 'class'],
 		);
-		await queryRunner.query(`DROP VIEW "class"."lessons_view"`);
 		await queryRunner.query(`CREATE VIEW "class"."lessons_view" AS select l.id as lessonId, l."date" as lessonDate, l.status as lessonStatus, l.title as lessonTitle, 
     ls.visit as studentVisit, s.id as studentId, s."name" as studentName,
     t.id as teacherId, t."name" as teacherName,

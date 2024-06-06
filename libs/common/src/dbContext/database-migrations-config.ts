@@ -3,6 +3,8 @@ import { join } from 'path';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { getConfigFromPath } from '../configs';
 
+// Отдельная конфигурация соединения для миграций БД
+// При компиляции Webpack'ом ломается структура приложения и возникает проблема при конфигурации сущностей
 function getDatabaseConfig(configService: ConfigService): DataSourceOptions {
 	return {
 		type: 'postgres',

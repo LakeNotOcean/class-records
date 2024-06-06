@@ -11,7 +11,7 @@ export const configSwagger = (nodeApp: INestApplication<any>, env: EnvEnum) => {
 	const version = foundVersion ? foundVersion : 'unknown';
 	const swaggerConfig = new DocumentBuilder()
 		.setTitle('Class Records API')
-		.setDescription('## API with a method for getting a list of lessons')
+		.setDescription('## API for class-records')
 		.setVersion(version)
 		.build();
 
