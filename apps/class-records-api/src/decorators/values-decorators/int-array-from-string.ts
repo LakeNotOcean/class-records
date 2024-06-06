@@ -7,14 +7,14 @@ import {
 	setValidationErrorConstraint,
 	ValidationException,
 } from 'libs/common/src/exceptions';
-import { getIntSeparatedByCommasDescription } from '../../api-descriptions/int-seperated-by-commas.description';
+import { getIntArrayFromStringDescription } from '../../api-descriptions/int-array-from-string.description';
 import { IS_NOT_A_STRING } from '../../constants/error-constraints.constant';
 import { INT_REGEX } from '../../constants/regex.constant';
 import { getArrayFromString } from '../../utils/get-array-from-string';
 import { intValueDecOptions } from './int-value.decorator';
 
-export function intSeparatedByCommasValueDec(opt: intValueDecOptions) {
-	const apiDescr = getIntSeparatedByCommasDescription();
+export function intArrayFromStringDec(opt: intValueDecOptions) {
+	const apiDescr = getIntArrayFromStringDescription();
 	return applyDecorators(
 		ApiProperty({
 			...apiDescr,
