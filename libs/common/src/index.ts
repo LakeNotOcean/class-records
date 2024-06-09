@@ -3,6 +3,7 @@ export * from './configs';
 export * from './constants/constants';
 export * from './dbContext';
 export * from './enums';
+export * from './exceptions';
 export * from './loggers';
 export * from './map-utils';
 export * from './parse-utils';
