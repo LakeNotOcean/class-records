@@ -1,7 +1,7 @@
 import { Get, Type, UseInterceptors, applyDecorators } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { TransactionInterceptor } from '../../inteceptors/transaction.interceptor';
-import { GetFromDbDecorator } from './get-from-db.decorator';
+import { GetFromDbDecorator } from './actions/get-from-db.decorator';
 
 export type getRequestDecOptions = {
 	route?: string;
