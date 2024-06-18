@@ -1,4 +1,4 @@
-import { StatusEnum, toInteger } from '@common';
+import { isNullOrUndefined, StatusEnum, toInteger } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
@@ -21,7 +21,7 @@ export function intValueDec(opt: intValueDecOptions) {
 	const decorators = [
 		ApiProperty({ required: opt.isRequired, type: 'integer' }),
 		opt.isRequired ? IsNotEmpty() : IsOptional(),
-		ValidateIf((_obj, value) => value != null && value != undefined),
+		ValidateIf((_obj, value) => !(!opt.isRequired && isNullOrUndefined(value))),
 		IsInt(),
 		Transform(({ value }) =>
 			toInteger(value).getStatus() == StatusEnum.Error

@@ -1,4 +1,4 @@
-import { StatusEnum, toDate } from '@common';
+import { isNullOrUndefined, StatusEnum, toDate } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, ValidateIf } from 'class-validator';
@@ -23,7 +23,7 @@ export function dateOrRangeValueDec(opt: dateValueDecOptions) {
 			required: opt.isRequired,
 		}),
 		opt.isRequired ? IsNotEmpty() : IsOptional(),
-		ValidateIf((_obj, value) => value != null && value != undefined),
+		ValidateIf((_obj, value) => !(!opt.isRequired && isNullOrUndefined(value))),
 		TransformWithValidationErrorDec((_key, value, error) => {
 			if (typeof value !== 'string') {
 				setValidationErrorConstraint(error, IS_NOT_A_STRING);

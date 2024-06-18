@@ -1,3 +1,4 @@
+import { isNullOrUndefined } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, ValidateIf } from 'class-validator';
@@ -21,7 +22,7 @@ export function weekDaysArrayValueDec(opt: weekDaysArrayValueDecOptions) {
 			required: opt.isRequired,
 		}),
 		opt.isRequired ? IsNotEmpty() : IsOptional(),
-		ValidateIf((_obj, value) => value != null && value != undefined),
+		ValidateIf((_obj, value) => !(!opt.isRequired && isNullOrUndefined(value))),
 		TransformWithValidationErrorDec((key, value, error) => {
 			if (!(value instanceof Array)) {
 				setValidationErrorConstraint(error, IS_NOT_AN_ARRAY);

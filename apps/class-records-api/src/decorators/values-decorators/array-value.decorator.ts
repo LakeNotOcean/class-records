@@ -1,3 +1,4 @@
+import { isNullOrUndefined } from '@common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -30,7 +31,9 @@ export function arrayOfEntitiesValueDec(opt: arrayValueDecOptions) {
 	];
 	if (!opt.isRequired) {
 		decorators.push(
-			ValidateIf((_, value) => value != null && value != undefined),
+			ValidateIf(
+				(_obj, value) => !(!opt.isRequired && isNullOrUndefined(value)),
+			),
 		);
 	}
 	decorators.push(
